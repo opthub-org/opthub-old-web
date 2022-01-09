@@ -1,0 +1,36 @@
+query($id: Int!) {
+  matches_by_pk(id: $id) {
+    id
+    name
+    budget
+    environments {
+      key
+      value
+      public
+    }
+    created_at
+    updated_at
+    competition {
+      id
+      owner { name }
+    }
+    problem {
+      id
+      description_en
+      description_ja
+      owner { name }
+      image
+      created_at
+      updated_at
+    }
+    indicator {
+      id
+      description_en
+      description_ja
+      owner { name }
+      image
+      created_at
+      updated_at
+    }
+  }
+}

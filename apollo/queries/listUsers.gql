@@ -1,0 +1,11 @@
+query(
+  $offset: Int = 0
+  $limit: Int = 100
+  $where: users_bool_exp = {}
+) {
+  users(limit: $limit, offset: $offset, where: $where) {
+    name
+    created_at
+    updated_at
+  }
+}

@@ -1,0 +1,21 @@
+query($id: String!) {
+  competitions_by_pk(id: $id) {
+    id
+    description_en
+    description_ja
+    open_at
+    close_at
+    created_at
+    updated_at
+    owner { name }
+    matches {
+      id
+      name
+      budget
+      created_at
+      updated_at
+      problem { id }
+      indicator { id }
+    }
+  }
+}

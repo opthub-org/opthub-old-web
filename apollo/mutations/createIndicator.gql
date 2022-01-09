@@ -1,0 +1,24 @@
+mutation(
+  $id: String!
+  $image: String!
+  $description_en: String!
+  $description_ja: String!
+) {
+  insert_indicators_one(
+    object: {
+      id: $id
+      image: $image
+      description_en: $description_en
+      description_ja: $description_ja
+    }
+  ) {
+    id
+    owner { name }
+    matches {
+      competition_id
+      name
+    }
+    created_at
+    updated_at
+  }
+}

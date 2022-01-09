@@ -1,0 +1,15 @@
+mutation(
+  $id: String!
+) {
+  delete_competitions_by_pk(
+    pk_columns: { id: $id }
+  ) {
+    id
+    owner { name }
+    matches { name }
+    open_at
+    close_at
+    created_at
+    updated_at
+  }
+}

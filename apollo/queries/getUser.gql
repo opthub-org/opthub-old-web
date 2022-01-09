@@ -1,0 +1,31 @@
+query($name: String!) {
+  users(where: {name: {_eq: $name}}) {
+    name
+    created_at
+    updated_at
+    problems {
+      id
+      created_at
+      updated_at
+    }
+    indicators {
+      id
+      created_at
+      updated_at
+    }
+    competitions {
+      id
+      created_at
+      updated_at
+    }
+    solutions(distinct_on: match_id) {
+      match {
+        id
+        name
+        competition {
+          id
+        }
+      }
+    }
+  }
+}

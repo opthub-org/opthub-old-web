@@ -1,0 +1,18 @@
+query(
+  $match_id: Int!
+  $owner_name: String!
+) {
+  solutions(where: {match_id: {_eq: $match_id}, owner: {name: {_eq: $owner_name}}}) {
+    id
+    variable
+    objective
+    constraint
+    score
+    created_at
+    updated_at
+    evaluation_started_at
+    evaluation_finished_at
+    scoring_started_at
+    scoring_finished_at
+  }
+}

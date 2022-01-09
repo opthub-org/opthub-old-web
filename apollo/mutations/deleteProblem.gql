@@ -1,0 +1,16 @@
+mutation(
+  $id: String!
+) {
+  delete_problems_by_pk(
+    pk_columns: { id: $id }
+  ) {
+    id
+    owner { name }
+    matches {
+      competition_id
+      name
+    }
+    created_at
+    updated_at
+  }
+}

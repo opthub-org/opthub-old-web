@@ -1,0 +1,15 @@
+query(
+  $offset: Int = 0
+  $limit: Int = 100
+  $where: competitions_bool_exp = {}
+) {
+  competitions(offset: $offset, limit: $limit, where: $where) {
+    id
+    owner { name }
+    matches { name }
+    open_at
+    close_at
+    created_at
+    updated_at
+  }
+}

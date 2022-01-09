@@ -1,0 +1,27 @@
+mutation(
+  $id: String!
+  $new_id: String!
+  $open_at: timestamptz!
+  $close_at: timestamptz!
+  $description_en: String!
+  $description_ja: String!
+) {
+  update_competitions_by_pk(
+    pk_columns: { id: $id }
+    _set: {
+      id: $new_id
+      open_at: $open_at
+      close_at: $close_at
+      description_en: $description_en
+      description_ja: $description_ja
+    }
+  ) {
+    id
+    owner { name }
+    matches { name }
+    open_at
+    close_at
+    created_at
+    updated_at
+  }
+}

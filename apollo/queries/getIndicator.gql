@@ -1,0 +1,22 @@
+query($id: String!) {
+  indicators_by_pk(id: $id) {
+    id
+    description_en
+    description_ja
+    image
+    created_at
+    updated_at
+    owner { name }
+    matches {
+      id
+      name
+      competition {
+        id
+        owner { name }
+      }
+      budget
+      created_at
+      updated_at
+    }
+  }
+}

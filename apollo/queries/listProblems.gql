@@ -1,0 +1,17 @@
+query(
+  $offset: Int = 0
+  $limit: Int = 100
+  $where: problems_bool_exp = {}
+) {
+  problems(offset: $offset, limit: $limit, where: $where) {
+    id
+    owner { name }
+    matches {
+      id
+      competition_id
+      name
+    }
+    created_at
+    updated_at
+  }
+}

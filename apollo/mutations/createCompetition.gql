@@ -1,0 +1,25 @@
+mutation(
+  $id: String!
+  $open_at: timestamptz!
+  $close_at: timestamptz!
+  $description_en: String!
+  $description_ja: String!
+) {
+  insert_competitions_one(
+    object: {
+      id: $id
+      open_at: $open_at
+      close_at: $close_at
+      description_en: $description_en
+      description_ja: $description_ja
+    }
+  ) {
+    id
+    owner { name }
+    matches { name }
+    open_at
+    close_at
+    created_at
+    updated_at
+  }
+}

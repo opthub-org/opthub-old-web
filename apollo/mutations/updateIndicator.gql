@@ -1,0 +1,26 @@
+mutation(
+  $id: String!
+  $new_id: String!
+  $image: String!
+  $description_en: String!
+  $description_ja: String!
+) {
+  update_indicators_by_pk(
+    pk_columns: { id: $id }
+    _set: {
+      id: $new_id
+      image: $image
+      description_en: $description_en
+      description_ja: $description_ja
+    }
+  ) {
+    id
+    owner { name }
+    matches {
+      competition_id
+      name
+    }
+    created_at
+    updated_at
+  }
+}
