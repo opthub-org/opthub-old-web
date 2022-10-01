@@ -322,19 +322,23 @@ end`,
             .locale(this.$i18n.locale)
             .format('YYYY-MM-DD HH:mm:ss')
           const p = m.problem
-          p.created_at = dayjs(p.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          p.updated_at = dayjs(p.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
+          if (p) {
+            p.created_at = dayjs(p.created_at)
+              .locale(this.$i18n.locale)
+              .format('YYYY-MM-DD HH:mm:ss')
+            p.updated_at = dayjs(p.updated_at)
+              .locale(this.$i18n.locale)
+              .format('YYYY-MM-DD HH:mm:ss')
+          }
           const i = m.indicator
-          i.created_at = dayjs(i.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          i.updated_at = dayjs(i.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
+          if (i) {
+            i.created_at = dayjs(i.created_at)
+              .locale(this.$i18n.locale)
+              .format('YYYY-MM-DD HH:mm:ss')
+            i.updated_at = dayjs(i.updated_at)
+              .locale(this.$i18n.locale)
+              .format('YYYY-MM-DD HH:mm:ss')
+          }
           return m
         } catch (error) {
           console.error(error)
