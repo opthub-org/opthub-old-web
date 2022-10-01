@@ -79,8 +79,8 @@
               m.name
             }}</nuxt-link>
           </td>
-          <td>{{ m.problem?.id }}</td>
-          <td>{{ m.indicator?.id }}</td>
+          <td>{{ m.problem ? m.problem.id : $t('(private)') }}</td>
+          <td>{{ m.indicator ? m.indicator.id : $t('(private)') }}</td>
           <td>{{ m.budget }}</td>
           <td>{{ m.created_at }}</td>
           <td>{{ m.updated_at }}</td>
@@ -176,4 +176,5 @@ ja:
   Owner only: 所有者のみ
   loading: 読込中
   no data: データがありません
+  (private): （非公開）
 </i18n>
