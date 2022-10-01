@@ -369,5 +369,5 @@ ja:
   Created at: 作成日時
   Updated at: 更新日時
   Public: 公開
-  (private): 非公開
+  (private): （非公開）
 </i18n>
