@@ -14,6 +14,16 @@
     />
     <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
     <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
+    <v-radio-group v-model="competition.public">
+      <v-radio
+        :label="$t('public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('private')"
+        :value="false"
+      />
+    </v-radio-group>
 
     <client-only>
       <mavon-editor
