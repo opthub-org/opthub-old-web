@@ -34,12 +34,16 @@
     <v-simple-table>
       <thead>
         <tr>
+          <th>{{ $t('Public') }}</th>
           <th>{{ $t('Key') }}</th>
           <th>{{ $t('Value') }}</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="e in match.environments" :key="e.key">
+          <td>
+            <code>{{ e.public }}</code>
+          </td>
           <td>
             <code>{{ e.key }}</code>
           </td>
@@ -50,67 +54,77 @@
       </tbody>
     </v-simple-table>
 
-    <h2>{{ $t('Problem') + ': ' + match.problem.id }}</h2>
-    <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="match.problem.description_en"
-        language="en"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="match.problem.description_ja"
-        language="ja"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
-    </client-only>
-    <ul>
-      <li>{{ $t('Owner') + ': ' + match.problem.owner.name }}</li>
-      <li>{{ $t('Created at') + ': ' + match.problem.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + match.problem.updated_at }}</li>
-    </ul>
+    <template v-if="match.problem">
+      <h2>{{ $t('Problem') + ': ' + match.problem.id }}</h2>
+      <client-only>
+        <mavon-editor
+          v-if="$i18n.locale === 'en'"
+          v-model="match.problem.description_en"
+          language="en"
+          default-open="preview"
+          style="z-index: 1;"
+          :box-shadow="false"
+          :editable="false"
+          :subfield="false"
+          :toolbars-flag="false"
+        />
+        <mavon-editor
+          v-if="$i18n.locale === 'ja'"
+          v-model="match.problem.description_ja"
+          language="ja"
+          default-open="preview"
+          style="z-index: 1;"
+          :box-shadow="false"
+          :editable="false"
+          :subfield="false"
+          :toolbars-flag="false"
+        />
+      </client-only>
+      <ul>
+        <li>{{ $t('Owner') + ': ' + match.problem.owner.name }}</li>
+        <li>{{ $t('Created at') + ': ' + match.problem.created_at }}</li>
+        <li>{{ $t('Updated at') + ': ' + match.problem.updated_at }}</li>
+      </ul>
+    </template>
+    <template v-else>
+      <h2>{{ $t('Problem') + ': ' + $('(private)') }}</h2>
+    </template>
 
-    <h2>{{ $t('Indicator') + ': ' + match.indicator.id }}</h2>
-    <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="match.indicator.description_en"
-        language="en"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="match.indicator.description_ja"
-        language="ja"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
-    </client-only>
-    <ul>
-      <li>{{ $t('Owner') + ': ' + match.indicator.owner.name }}</li>
-      <li>{{ $t('Created at') + ': ' + match.indicator.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + match.indicator.updated_at }}</li>
-    </ul>
+    <template v-if="match.indicator">
+      <h2>{{ $t('Indicator') + ': ' + match.indicator.id }}</h2>
+      <client-only>
+        <mavon-editor
+          v-if="$i18n.locale === 'en'"
+          v-model="match.indicator.description_en"
+          language="en"
+          default-open="preview"
+          style="z-index: 1;"
+          :box-shadow="false"
+          :editable="false"
+          :subfield="false"
+          :toolbars-flag="false"
+        />
+        <mavon-editor
+          v-if="$i18n.locale === 'ja'"
+          v-model="match.indicator.description_ja"
+          language="ja"
+          default-open="preview"
+          style="z-index: 1;"
+          :box-shadow="false"
+          :editable="false"
+          :subfield="false"
+          :toolbars-flag="false"
+        />
+      </client-only>
+      <ul>
+        <li>{{ $t('Owner') + ': ' + match.indicator.owner.name }}</li>
+        <li>{{ $t('Created at') + ': ' + match.indicator.created_at }}</li>
+        <li>{{ $t('Updated at') + ': ' + match.indicator.updated_at }}</li>
+      </ul>
+    </template>
+    <template v-else>
+      <h2>{{ $t('Problem') + ': ' + $('(private)') }}</h2>
+    </template>
   </div>
 </template>
 
@@ -350,4 +364,6 @@ ja:
   Owner: 所有者
   Created at: 作成日時
   Updated at: 更新日時
+  Public: 公開
+  (private): 非公開
 </i18n>
