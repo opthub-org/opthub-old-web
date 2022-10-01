@@ -1,6 +1,7 @@
 query($id: String!) {
   competitions_by_pk(id: $id) {
     id
+    public
     description_en
     description_ja
     open_at
@@ -14,8 +15,14 @@ query($id: String!) {
       budget
       created_at
       updated_at
-      problem { id }
-      indicator { id }
+      problem {
+        id
+        public
+      }
+      indicator {
+        id
+        public
+      }
     }
   }
 }

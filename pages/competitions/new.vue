@@ -15,6 +15,17 @@
     <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
     <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
 
+    <v-radio-group v-model="competition.public">
+      <v-radio
+        :label="$t('Public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('Private')"
+        :value="false"
+      />
+    </v-radio-group>
+
     <client-only>
       <mavon-editor
         v-if="$i18n.locale === 'en'"
@@ -54,6 +65,7 @@ export default {
     return {
       competition: {
         id: 'eccomp2020',
+        public: false,
         open_at: now.format('YYYY-MM-DD HH:mm'),
         close_at: now.add(1, 'day').format('YYYY-MM-DD HH:mm'),
         description_en: `\
@@ -140,6 +152,7 @@ Explain constraints here.
         mutation: createCompetition,
         variables: {
           id: this.competition.id,
+          public: this.competition.public,
           open_at: dayjs(this.competition.open_at).format(
             'YYYY-MM-DD HH:mm:ssZ'
           ),
@@ -174,10 +187,12 @@ Explain constraints here.
 
 <i18n lang="yaml">
 ja:
-  New Competition: コンペティションを作成する
-  ID: ID
   2--32 characters: 2~32文字
-  Open at: 競技開始
   Close at: 競技終了
+  ID: ID
+  New Competition: コンペティションを作成する
+  Open at: 競技開始
+  Public: 公開
+  Private: 非公開
   Submit: 送信
 </i18n>

@@ -2,7 +2,7 @@ query(
   $match_id: Int!
   $owner_name: String!
 ) {
-  solutions(where: {match_id: {_eq: $match_id}, owner: {name: {_eq: $owner_name}}}) {
+  solutions(where: { match_id: { _eq: $match_id }, owner: { name: { _eq: $owner_name } } }) {
     id
     variable
     objective

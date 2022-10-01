@@ -4,31 +4,35 @@ query($id: Int!) {
     name
     budget
     environments {
+      id
+      public
       key
       value
-      public
     }
     created_at
     updated_at
     competition {
       id
+      public
       owner { name }
     }
     problem {
       id
+      public
+      image
       description_en
       description_ja
       owner { name }
-      image
       created_at
       updated_at
     }
     indicator {
       id
+      public
+      image
       description_en
       description_ja
       owner { name }
-      image
       created_at
       updated_at
     }

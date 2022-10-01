@@ -14,13 +14,14 @@
     />
     <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
     <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
+
     <v-radio-group v-model="competition.public">
       <v-radio
-        :label="$t('public')"
+        :label="$t('Public')"
         :value="true"
       />
       <v-radio
-        :label="$t('private')"
+        :label="$t('Private')"
         :value="false"
       />
     </v-radio-group>
@@ -99,6 +100,7 @@ export default {
         variables: {
           id: this.$route.params.id,
           new_id: this.competition.id,
+          public: this.competition.public,
           open_at: dayjs(this.competition.open_at).format(
             'YYYY-MM-DD HH:mm:ssZ'
           ),
@@ -160,10 +162,12 @@ export default {
 
 <i18n lang="yaml">
 ja:
+  2--32 characters: 2~32文字
+  Close at: 競技終了
   Edit Competition: コンペティションを編集する
   ID: ID
-  2--32 characters: 2~32文字
   Open at: 競技開始
-  Close at: 競技終了
+  Public: 公開
+  Private: 非公開
   Submit: 送信
 </i18n>

@@ -5,6 +5,7 @@ mutation(
     pk_columns: { id: $id }
   ) {
     id
+    public
     owner { name }
     matches { name }
     open_at

@@ -20,6 +20,17 @@
       :placeholder="$t('opthub/hypervolume:latest')"
     />
 
+    <v-radio-group v-model="indicator.public">
+      <v-radio
+        :label="$t('Public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('Private')"
+        :value="false"
+      />
+    </v-radio-group>
+
     <client-only>
       <mavon-editor
         v-if="$i18n.locale === 'en'"
@@ -90,6 +101,7 @@ export default {
         variables: {
           id: this.$route.params.id,
           new_id: this.indicator.id,
+          public: this.indicator.public,
           image: this.indicator.image,
           description_en: this.indicator.description_en,
           description_ja: this.indicator.description_ja,
@@ -146,11 +158,13 @@ export default {
 
 <i18n lang="yaml">
 ja:
-  Edit Indicator: 指標を編集する
-  ID: ID
   2--32 characters: 2~32文字
-  Image: イメージ
   Docker image tag: Dockerイメージタグ
+  Edit Indicator: 指標を編集する
   Hypervolume indicator: ハイパーボリューム指標
+  ID: ID
+  Image: イメージ
+  Public: 公開
+  Private: 非公開
   Submit: 送信
 </i18n>

@@ -5,6 +5,8 @@ mutation(
     pk_columns: { id: $id }
   ) {
     id
+    public
+    image
     owner { name }
     matches {
       competition_id

@@ -1,9 +1,10 @@
 query($id: String!) {
   problems_by_pk(id: $id) {
     id
+    public
+    image
     description_en
     description_ja
-    image
     created_at
     updated_at
     owner { name }
@@ -12,6 +13,7 @@ query($id: String!) {
       name
       competition {
         id
+        public
         owner { name }
       }
       budget

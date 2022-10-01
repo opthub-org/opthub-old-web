@@ -1,5 +1,6 @@
 mutation(
   $id: String!
+  $public: Boolean!
   $image: String!
   $description_en: String!
   $description_ja: String!
@@ -7,12 +8,15 @@ mutation(
   insert_indicators_one(
     object: {
       id: $id
+      public: $public
       image: $image
       description_en: $description_en
       description_ja: $description_ja
     }
   ) {
     id
+    public
+    image
     owner { name }
     matches {
       competition_id

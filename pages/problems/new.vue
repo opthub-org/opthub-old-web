@@ -20,6 +20,17 @@
       :placeholder="$t('opthub/sphere:latest')"
     />
 
+    <v-radio-group v-model="problem.public">
+      <v-radio
+        :label="$t('Public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('Private')"
+        :value="false"
+      />
+    </v-radio-group>
+
     <client-only>
       <mavon-editor
         v-if="$i18n.locale === 'en'"
@@ -52,6 +63,7 @@ export default {
   data() {
     return {
       problem: {
+        public: false,
         description_en: `\
 # Sphere function minimization problem
 This is a template for describing a problem.
@@ -204,11 +216,13 @@ $\\text{minimize } f(x_1, x_2) = x_1^2 + x_2^2 \\quad \\text{subject to } -1 \\l
 
 <i18n lang="yaml">
 ja:
-  New Problem: 問題を作成する
-  ID: ID
   2--32 characters: 2~32文字
-  Image: イメージ
   Docker image tag: Dockerイメージタグ
+  ID: ID
+  Image: イメージ
+  New Problem: 問題を作成する
+  Public: 公開
+  Private: 非公開
   Sphere problem: Sphere問題
   Submit: 送信
 </i18n>

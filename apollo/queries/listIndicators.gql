@@ -5,6 +5,7 @@ query(
 ) {
   indicators(offset: $offset, limit: $limit, where: $where) {
     id
+    public
     owner { name }
     matches {
       id

@@ -20,6 +20,17 @@
       :placeholder="$t('opthub/sphere:latest')"
     />
 
+    <v-radio-group v-model="problem.public">
+      <v-radio
+        :label="$t('Public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('Private')"
+        :value="false"
+      />
+    </v-radio-group>
+
     <client-only>
       <mavon-editor
         v-if="$i18n.locale === 'en'"
@@ -90,7 +101,7 @@ export default {
         variables: {
           id: this.$route.params.id,
           new_id: this.problem.id,
-          name: this.problem.name,
+          public: this.problem.public,
           image: this.problem.image,
           description_en: this.problem.description_en,
           description_ja: this.problem.description_ja,
@@ -147,13 +158,13 @@ export default {
 
 <i18n lang="yaml">
 ja:
+  2--32 characters: 2~32文字
+  Docker image tag: Dockerイメージタグ
   Edit Problem: 問題を編集する
   ID: ID
-  2--32 characters: 2~32文字
-  Name: 名前
-  2--64 characters: 2~64文字
   Image: イメージ
-  Docker image tag: Dockerイメージタグ
+  Public: 公開
+  Private: 非公開
   Sphere problem: Sphere問題
   Submit: 送信
 </i18n>

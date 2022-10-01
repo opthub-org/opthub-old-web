@@ -1,6 +1,7 @@
 mutation(
   $id: String!
   $new_id: String!
+  $public: Boolean!
   $open_at: timestamptz!
   $close_at: timestamptz!
   $description_en: String!
@@ -10,6 +11,7 @@ mutation(
     pk_columns: { id: $id }
     _set: {
       id: $new_id
+      public: $public
       open_at: $open_at
       close_at: $close_at
       description_en: $description_en
@@ -17,6 +19,7 @@ mutation(
     }
   ) {
     id
+    public
     owner { name }
     matches { name }
     open_at

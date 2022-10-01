@@ -20,6 +20,17 @@
       :placeholder="$t('opthub/hypervolume:latest')"
     />
 
+    <v-radio-group v-model="indicator.public">
+      <v-radio
+        :label="$t('Public')"
+        :value="true"
+      />
+      <v-radio
+        :label="$t('Private')"
+        :value="false"
+      />
+    </v-radio-group>
+
     <client-only>
       <mavon-editor
         v-if="$i18n.locale === 'en'"
@@ -52,6 +63,7 @@ export default {
   data() {
     return {
       indicator: {
+        public: false,
         description_en: `\
 # Hypervolume Indicator
 This is a template of indicator description.
@@ -206,11 +218,13 @@ $\\text{minimize } f(x_1, x_2) = x_1^2 + x_2^2 \\quad \\text{subject to } -1 \\l
 
 <i18n lang="yaml">
 ja:
-  New Indicator: 指標を作成する
-  ID: ID
   2--32 characters: 2~32文字
-  Image: イメージ
   Docker image tag: Dockerイメージタグ
   Hypervolume indicator: ハイパーボリューム指標
+  ID: ID
+  Image: イメージ
+  New Indicator: 指標を作成する
+  Public: 公開
+  Private: 非公開
   Submit: 送信
 </i18n>
