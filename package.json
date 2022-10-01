@@ -37,7 +37,7 @@
     "mavon-editor": "^2.9.0",
     "nanoid": "^2.1.11",
     "nuxt": "^2.13.0",
-    "nuxt-helmet": "^2.0.0",
+    "nuxt-helmet": "^2.1.1",
     "nuxt-i18n": "^6.15.1",
     "vue-chartjs": "^3.5.0"
   },
