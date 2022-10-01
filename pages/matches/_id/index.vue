@@ -87,7 +87,7 @@
       </ul>
     </template>
     <template v-else>
-      <h2>{{ $t('Problem') + ': ' + $('(private)') }}</h2>
+      <h2>{{ $t('Problem') + ': ' + $t('(private)') }}</h2>
     </template>
 
     <template v-if="match.indicator">
@@ -123,7 +123,7 @@
       </ul>
     </template>
     <template v-else>
-      <h2>{{ $t('Problem') + ': ' + $('(private)') }}</h2>
+      <h2>{{ $t('Problem') + ': ' + $t('(private)') }}</h2>
     </template>
   </div>
 </template>
