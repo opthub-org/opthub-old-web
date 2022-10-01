@@ -79,8 +79,8 @@
               m.name
             }}</nuxt-link>
           </td>
-          <td>{{ m.problem?.id }}</td>
-          <td>{{ m.indicator?.id }}</td>
+          <td>{{ m.problem.id }}</td>
+          <td>{{ m.indicator.id }}</td>
           <td>{{ m.budget }}</td>
           <td>{{ m.created_at }}</td>
           <td>{{ m.updated_at }}</td>
