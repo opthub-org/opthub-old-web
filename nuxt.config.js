@@ -50,9 +50,9 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/apollo',
     '@nuxtjs/auth',
+    '@nuxtjs/i18n',
     '@nuxtjs/markdownit',
     '@nuxtjs/pwa',
-    'nuxt-i18n',
   ],
   helmet: {},
   apollo: {
