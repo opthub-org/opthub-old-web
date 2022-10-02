@@ -40,6 +40,7 @@ export default {
     '@nuxt/typescript-build',
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
+    '@nuxt/postcss8',
   ],
   /*
    ** Nuxt.js modules
