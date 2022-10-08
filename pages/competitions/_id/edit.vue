@@ -46,6 +46,85 @@
         @fullScreen="fullscreen"
       />
     </client-only>
+
+    <div>
+    <h2>match</h2>
+    <v-flex md class="ma-auto">
+      <v-layout row v-for="match in competition.matches" :key="match.id">
+        <v-text-field
+          v-model="match.id"
+          :label="$t('match ID')"
+          :hint="$t('positive integer')"
+          :placeholder="$t('0')"
+        />
+        <v-text-field
+          v-model="match.name"
+          :label="$t('match name')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('match1')"
+        />
+        <v-text-field
+          v-model="match.budget"
+          :label="$t('match budget')"
+          :hint="$t('positive integer')"
+          :placeholder="$t('1000')"
+        />
+        <v-text-field
+          v-model="match.problem"
+          :label="$t('match problem')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('problem1')"
+        />
+        <v-text-field
+          v-model="match.indicator"
+          :label="$t('match indicator')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('indicator1')"
+        />
+        
+        <v-btn fab dark small color="red" @click="removeMatch(match.id)">
+            <v-icon dark>remove</v-icon>
+        </v-btn>
+
+        <div>
+
+        <v-flex md class="ma-auto">
+        <v-layout row v-for="env in match.environments" :key="env.id">
+          <v-text-field
+            v-model="env.key"
+            :label="$t('environment key')"
+            :hint="$t('2-32 characters')"
+            :placeholder="$t('environment key')"
+          />
+          <v-text-field
+            v-model="env.value"
+            :label="$t('environment value')"
+            :hint="$t('2--32 characters')"
+            :placeholder="$t('environment value')"
+          />
+          <v-checkbox
+            v-model="env.public"
+            :label="$t('public')"
+            :hint="$t('boolean')"
+          />
+          
+          <v-btn fab dark small color="red" @click="removeEnvironment(match.id, env.key)">
+              <v-icon dark>remove</v-icon>
+          </v-btn>      
+        </v-layout>
+        </v-flex>
+        </div>
+        <v-btn fab dark small color="blue" @click="addEnvironment(match.id)">
+            <v-icon dark>add</v-icon>
+        </v-btn>
+
+      </v-layout>
+      <v-btn fab dark small color="blue" @click="addMatch()">
+          <v-icon dark>add</v-icon>
+      </v-btn>
+    </v-flex>
+  </div>
+
     <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
   </div>
 </template>
@@ -128,6 +207,53 @@ export default {
       })
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
+    addMatch () {
+      let matches = this.competition.matches
+      matches.push({
+        id: matches.length,
+        name: '',
+        budget: 0,
+        problem: '',
+        indicator: '',
+        environments: []
+      })
+    },
+    removeMatch (id) {
+      let matches = this.competition.matches
+      matches = matches.filter((match) => { return match.id !== id })
+      let newMatches = []
+      for (let i = 0; i < matches.length; i++) {
+        let {id, ...matchProps} = matches[i]
+        newMatches.push({
+          id: i,
+          ...matchProps
+        })
+      }
+      this.competition.matches = newMatches
+    },
+    addEnvironment (id) {
+      let match = this.competition.matches.find((match) => {return match.id == id})
+      let envs = match.environments
+      envs.push({
+        id: envs.length,
+        key: '',
+        value: '',
+        public: false
+      })
+    },
+    removeEnvironment (matchId, envId) {
+      let match = this.competition.matches.find((match) => {return match.id == matchId})
+      let envs = match.environments.filter((env) => { return env.id !== envId })
+      let newEnvs = []
+      for (let i = 0; i < envs.length; i++) {
+        let {id, ...envProps} = envs[i]
+        newEnvs.push({
+          id: i,
+          ...envProps
+        })
+      }
+      match.environments = newEnvs
+    }
   },
   head() {
     return {
