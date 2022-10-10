@@ -1,30 +1,55 @@
 mutation(
-  $id: String!
-  $new_id: String!
-  $public: Boolean!
-  $open_at: timestamptz!
-  $close_at: timestamptz!
-  $description_en: String!
-  $description_ja: String!
+  $competitions_pk_columns: competitions_pk_columns_input!
+  $competitions_set: competitions_set_input
+  $matches_delete: [Int!]
+  $matches_updates: [matches_updates!]!
+  $matches_insert: [matches_insert_input!]!
+  $environments_delete: [Int!]
+  $environments_updates: [environments_updates!]!
+  $environments_insert: [environments_insert_input!]!
 ) {
   update_competitions_by_pk(
-    pk_columns: { id: $id }
-    _set: {
-      id: $new_id
-      public: $public
-      open_at: $open_at
-      close_at: $close_at
-      description_en: $description_en
-      description_ja: $description_ja
-    }
+    pk_columns: $competitions_pk_columns
+    _set: $competitions_set
   ) {
     id
-    public
-    owner { name }
-    matches { name }
-    open_at
-    close_at
-    created_at
-    updated_at
+  }
+
+  delete_matches(
+    where: { id: { _in: $matches_delete } }
+  ) {
+    affected_rows
+    returning { id }
+  }
+  update_matches_many(
+    updates: $matches_updates
+  ) {
+    affected_rows
+    returning { id }
+  }
+  insert_matches(
+    objects: $matches_insert
+  ) {
+    affected_rows
+    returning { id }
+  }
+
+  delete_environments(
+    where: { id: { _in: $environments_delete } }
+  ) {
+    affected_rows
+    returning { id }
+  }
+  update_environments_many(
+    updates: $environments_updates
+  ) {
+    affected_rows
+    returning { id }
+  }
+  insert_environments(
+    objects: $environments_insert
+  ) {
+    affected_rows
+    returning { id }
   }
 }

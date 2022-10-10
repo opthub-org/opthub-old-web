@@ -143,6 +143,10 @@ export default {
   data() {
     return {
       competition: {},
+      matches_delete: [],  //TODO: フォームで削除された match の id を追加してください
+      matches_insert: [],  //TODO: フォームで作成された match の {competition_id, name, budget, problem, indicator} を追加してください
+      environments_delete: [],  //TODO: フォームで削除された environment の id を追加してください
+      environments_insert: [],  //TODO: フォームで作成された environment の {match_id, public, key, value} を追加してください
       markdownOption: {
         bold: true,
         italic: true,
@@ -177,17 +181,54 @@ export default {
       await this.$apollo.mutate({
         mutation: updateCompetition,
         variables: {
-          id: this.$route.params.id,
-          new_id: this.competition.id,
-          public: this.competition.public,
-          open_at: dayjs(this.competition.open_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          close_at: dayjs(this.competition.close_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          description_en: this.competition.description_en,
-          description_ja: this.competition.description_ja,
+          competitions_pk_columns: { id: this.$route.params.id },
+          competitions_set: {
+            id: this.competition.id,
+            public: this.competition.public,
+            open_at: dayjs(this.competition.open_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            close_at: dayjs(this.competition.close_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            description_en: this.competition.description_en,
+            description_ja: this.competition.description_ja,
+          },
+          matches_delete: this.matches_delete,
+          matches_updates: this.competition.matches.map(m => { return {
+            pk_columns: { id: m.id },
+            _set: {
+              name: m.name,
+              budget: m.budget,
+              problem: m.problem,
+              indicator: m.indicator,
+            },
+          }}),
+          matches_insert: this.matches_insert.map(m => { return {
+            competition_id: m.competition_id,
+            name: m.name,
+            budget: m.budget,
+            problem: m.problem,
+            indicator: m.indicator,
+            environments: {
+              data: m.environments,
+            },
+          }}),
+          environments_delete: this.environments_delete,
+          environments_updates: this.competition.matches.flatMap(m => m.environments.map(e => { return {
+            pk_columns: { id: e.id },
+            _set: {
+              public: e.public,
+              key: e.key,
+              value: e.value,
+            },
+          }})),
+          environments_insert: this.environments_insert.map(e => { return {
+            match_id: e.match_id,
+            public: e.public,
+            key: e.key,
+            value: e.value,
+          }}),
         },
         refetchQueries: [
           { query: listCompetitions },
