@@ -119,6 +119,76 @@
         </v-btn>
 
       </v-layout>
+
+      <v-layout row v-for="match in matches_insert" :key="match.id">
+        <v-text-field
+          v-model="match.id"
+          :label="$t('match ID')"
+          :hint="$t('positive integer')"
+          :placeholder="$t('0')"
+        />
+        <v-text-field
+          v-model="match.name"
+          :label="$t('match name')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('match1')"
+        />
+        <v-text-field
+          v-model="match.budget"
+          :label="$t('match budget')"
+          :hint="$t('positive integer')"
+          :placeholder="$t('1000')"
+        />
+        <v-text-field
+          v-model="match.problem"
+          :label="$t('match problem')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('problem1')"
+        />
+        <v-text-field
+          v-model="match.indicator"
+          :label="$t('match indicator')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('indicator1')"
+        />
+        
+        <v-btn fab dark small color="red" @click="removeMatch(match.id)">
+            <v-icon dark>remove</v-icon>
+        </v-btn>
+
+        <div>
+
+        <v-flex md class="ma-auto">
+        <v-layout row v-for="env in match.environments" :key="env.id">
+          <v-text-field
+            v-model="env.key"
+            :label="$t('environment key')"
+            :hint="$t('2-32 characters')"
+            :placeholder="$t('environment key')"
+          />
+          <v-text-field
+            v-model="env.value"
+            :label="$t('environment value')"
+            :hint="$t('2--32 characters')"
+            :placeholder="$t('environment value')"
+          />
+          <v-checkbox
+            v-model="env.public"
+            :label="$t('public')"
+            :hint="$t('boolean')"
+          />
+          
+          <v-btn fab dark small color="red" @click="removeEnvironment(match.id, env.key)">
+              <v-icon dark>remove</v-icon>
+          </v-btn>      
+        </v-layout>
+        </v-flex>
+        </div>
+        <v-btn fab dark small color="blue" @click="addEnvironment(match.id)">
+            <v-icon dark>add</v-icon>
+        </v-btn>
+
+      </v-layout>
       <v-btn fab dark small color="blue" @click="addMatch()">
           <v-icon dark>add</v-icon>
       </v-btn>
@@ -136,6 +206,7 @@ import listCompetitions from '~/apollo/queries/listCompetitions.gql'
 import updateCompetition from '~/apollo/mutations/updateCompetition.gql'
 import getUser from '~/apollo/queries/getUser.gql'
 import DatetimePicker from '~/components/DatetimePicker'
+import crypto from 'crypto'
 export default {
   components: {
     DatetimePicker,
@@ -143,8 +214,8 @@ export default {
   data() {
     return {
       competition: {},
-      matches_delete: [],  //TODO: フォームで削除された match の id を追加してください
-      matches_insert: [],  //TODO: フォームで作成された match の {competition_id, name, budget, problem, indicator} を追加してください
+      matches_delete: [],
+      matches_insert: [],
       environments_delete: [],  //TODO: フォームで削除された environment の id を追加してください
       environments_insert: [],  //TODO: フォームで作成された environment の {match_id, public, key, value} を追加してください
       markdownOption: {
@@ -179,7 +250,7 @@ export default {
     async submit() {
       this.submitting = true
       await this.$apollo.mutate({
-        mutation: updateCompetition,
+        mutation: deepupdate_competitions_by_pk,
         variables: {
           competitions_pk_columns: { id: this.$route.params.id },
           competitions_set: {
@@ -249,9 +320,9 @@ export default {
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
     addMatch () {
-      let matches = this.competition.matches
-      matches.push({
-        id: matches.length,
+      let matches_insert = this.matches_insert
+      matches_insert.push({
+        id: crypto.randomBytes(20).toString('hex'),  // temporal id
         name: '',
         budget: 0,
         problem: '',
@@ -260,17 +331,17 @@ export default {
       })
     },
     removeMatch (id) {
-      let matches = this.competition.matches
-      matches = matches.filter((match) => { return match.id !== id })
-      let newMatches = []
-      for (let i = 0; i < matches.length; i++) {
-        let {id, ...matchProps} = matches[i]
-        newMatches.push({
-          id: i,
-          ...matchProps
-        })
+      if (typeof id === 'number') {
+        let matches = this.competition.matches
+        matches = matches.filter((match) => { return match.id !== id })
+        this.competition.matches = matches
+        this.matches_delete.push(id)
       }
-      this.competition.matches = newMatches
+      else {
+        let matches_insert = this.matches_insert
+        matches_insert = matches_insert.filter((match) => { return match.id !== id })
+        this.matches_insert = matches_insert
+      }
     },
     addEnvironment (id) {
       let match = this.competition.matches.find((match) => {return match.id == id})
