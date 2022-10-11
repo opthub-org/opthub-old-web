@@ -56,13 +56,13 @@
       <h2>{{ $t('Matches') }}</h2>
     </v-row>
     <v-row v-for="match in competition.matches" :key="match.id">
-      <v-card>
+      <v-card width="100%" class="ma-2">
         <v-container fluid>
           <v-row>
             <v-col>
               <v-text-field
                 v-model="match.id"
-                :label="$t('match ID')"
+                :label="$t('ID')"
                 :hint="$t('positive integer')"
                 readonly
                 disabled
@@ -71,7 +71,7 @@
             <v-col>
               <v-text-field
                 v-model="match.name"
-                :label="$t('match name')"
+                :label="$t('Name')"
                 :hint="$t('2--32 characters')"
                 :placeholder="$t('match1')"
               />
@@ -79,23 +79,23 @@
             <v-col>
               <v-text-field
                 v-model="match.budget"
-                :label="$t('match budget')"
-                :hint="$t('positive integer')"
+                :label="$t('Budget')"
+                :hint="$t('Positive integer')"
                 :placeholder="$t('1000')"
               />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="match.problem.id"
-                :label="$t('match problem')"
+                v-model="match.problem_id"
+                :label="$t('Problem')"
                 :hint="$t('2--32 characters')"
                 :placeholder="$t('problem1')"
               />
             </v-col>
             <v-col>
               <v-text-field
-                v-model="match.indicator.id"
-                :label="$t('match indicator')"
+                v-model="match.indicator_id"
+                :label="$t('Indicator')"
                 :hint="$t('2--32 characters')"
                 :placeholder="$t('indicator1')"
               />
@@ -107,21 +107,21 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-card>
+            <v-card width="100%" class="ma-2">
               <v-container fluid>
                 <v-row v-for="env in match.environments" :key="env.id">
                   <v-col>
                     <v-text-field
                       v-model="env.key"
-                      :label="$t('environment key')"
-                      :hint="$t('2-32 characters')"
+                      :label="$t('Key')"
+                      :hint="$t('2--32 characters')"
                       :placeholder="$t('ENV_VAR')"
                     />
                   </v-col>
                   <v-col>
                     <v-text-field
                       v-model="env.value"
-                      :label="$t('environment value')"
+                      :label="$t('Value')"
                       :hint="$t('2--32 characters')"
                       :placeholder="$t('hoge')"
                     />
@@ -242,8 +242,8 @@ export default {
             _set: {
               name: m.name,
               budget: m.budget,
-              problem_id: m.problem.id,
-              indicator_id: m.indicator.id,
+              problem_id: m.problem_id,
+              indicator_id: m.indicator_id,
             },
           }}),
 
@@ -252,8 +252,8 @@ export default {
             competition_id: this.competition.id,
             name: m.name,
             budget: m.budget,
-            problem_id: m.problem.id,
-            indicator_id: m.indicator.id,
+            problem_id: m.problem_id,
+            indicator_id: m.indicator_id,
             environments: {
               data: m.environments.map(e => { return {
                 public: e.public,
@@ -374,16 +374,21 @@ ja:
   2--32 characters: 2~32文字
   Add environment: 環境変数を追加
   Add match: 競技を追加
+  Budget: 評価回数
   Check to disclose this competition: チェックするとこのコンペティションを公開します
   Check to disclose this variable: チェックするとこの変数を公開します
   Close at: 競技終了
   Delete: 削除
   Edit Competition: コンペティションを編集する
   ID: ID
+  Key: キー
   Matches: 競技
+  Name: 名前
   Open at: 競技開始
-  positive integer: 正の整数
+  Positive integer: 正の整数
   Public: 公開
-  Private: 非公開
+  Problem: 問題
+  Indicator: 指標
   Submit: 送信
+  Value: 値
 </i18n>
