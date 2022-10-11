@@ -23,16 +23,11 @@
         <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
       </v-col>
       <v-col>
-        <v-radio-group v-model="competition.public">
-          <v-radio
-            :label="$t('Public')"
-            :value="true"
-          />
-          <v-radio
-            :label="$t('Private')"
-            :value="false"
-          />
-        </v-radio-group>
+        <v-checkbox
+          v-model="competition.public"
+          :label="$t('Public')"
+          :hint="$t('Check to disclose this competition')"
+        />
       </v-col>
     </v-row>
     <client-only>
@@ -111,14 +106,14 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-container>
+          <v-container fluid>
             <v-row v-for="env in match.environments" :key="env.id">
               <v-col>
                 <v-text-field
                   v-model="env.key"
                   :label="$t('environment key')"
                   :hint="$t('2-32 characters')"
-                  :placeholder="$t('environment key')"
+                  :placeholder="$t('ENV_VAR')"
                 />
               </v-col>
               <v-col>
@@ -126,39 +121,39 @@
                   v-model="env.value"
                   :label="$t('environment value')"
                   :hint="$t('2--32 characters')"
-                  :placeholder="$t('environment value')"
+                  :placeholder="$t('hoge')"
                 />
               </v-col>
               <v-col>
                 <v-checkbox
                   v-model="env.public"
                   :label="$t('Public')"
-                  :hint="$t('boolean')"
+                  :hint="$t('Check to disclose this variable')"
                 />
               </v-col>
               <v-col>
                 <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
-                    <v-icon>mid-minus</v-icon>
+                  <v-icon>mid-minus</v-icon>
                 </v-btn>      
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <v-btn icon color="primary" @click="addEnvironment(match.id)">
-                  <v-icon>mdi-plus</v-icon>
-                </v-btn>
               </v-col>
             </v-row>
           </v-container>
         </v-row>
         <v-row>
           <v-col>
-            <v-btn icon color="primary" @click="addMatch()">
+            <v-btn icon color="primary" @click="addEnvironment(match.id)">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-col>
         </v-row>
       </v-container>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn icon color="primary" @click="addMatch()">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-col>
     </v-row>
     <v-row>
       <v-col>
@@ -373,6 +368,8 @@ export default {
 <i18n lang="yaml">
 ja:
   2--32 characters: 2~32文字
+  Check to disclose this competition: チェックするとこのコンペティションを公開します
+  Check to disclose this variable: チェックするとこの変数を公開します
   Close at: 競技終了
   Edit Competition: コンペティションを編集する
   ID: ID
