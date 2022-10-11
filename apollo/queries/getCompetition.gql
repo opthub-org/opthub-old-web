@@ -23,6 +23,13 @@ query($id: String!) {
         id
         public
       }
+      environments {
+        match_id
+        id
+        key
+        value
+        public
+      }
     }
   }
 }
