@@ -307,8 +307,8 @@ export default {
         id: this.nextId--,
         name: '',
         budget: 0,
-        problem: { id: '' },
-        indicator: { id: '' },
+        problem_id: '',
+        indicator_id: '',
         environments: []
       })
     },
