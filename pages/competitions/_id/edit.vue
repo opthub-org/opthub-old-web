@@ -46,6 +46,83 @@
         @fullScreen="fullscreen"
       />
     </client-only>
+
+    <div>
+    <h2>match</h2>
+    <v-flex md class="ma-auto">
+      <v-layout row v-for="match in competition.matches" :key="match.id">
+        <v-text-field
+          v-model="match.id"
+          :label="$t('match ID')"
+          :hint="$t('positive integer')"
+          readonly
+        />
+        <v-text-field
+          v-model="match.name"
+          :label="$t('match name')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('match1')"
+        />
+        <v-text-field
+          v-model="match.budget"
+          :label="$t('match budget')"
+          :hint="$t('positive integer')"
+          :placeholder="$t('1000')"
+        />
+        <v-text-field
+          v-model="match.problem"
+          :label="$t('match problem')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('problem1')"
+        />
+        <v-text-field
+          v-model="match.indicator"
+          :label="$t('match indicator')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('indicator1')"
+        />
+        
+        <v-btn fab dark small color="red" @click="remove(match.id)">
+            <v-icon dark>remove</v-icon>
+        </v-btn>
+
+        <v-flex md class="ma-auto">
+          <v-layout row v-for="env in match.environments" :key="env.id">
+            <v-text-field
+              v-model="env.key"
+              :label="$t('environment key')"
+              :hint="$t('2-32 characters')"
+              :placeholder="$t('environment key')"
+            />
+            <v-text-field
+              v-model="env.value"
+              :label="$t('environment value')"
+              :hint="$t('2--32 characters')"
+              :placeholder="$t('environment value')"
+            />
+            <v-checkbox
+              v-model="env.public"
+              :label="$t('public')"
+              :hint="$t('boolean')"
+            />
+            
+            <v-btn fab dark small color="red" @click="removeEnvironment(match.id, env.key)">
+                <v-icon dark>remove</v-icon>
+            </v-btn>      
+          </v-layout>
+        </v-flex>
+
+        <v-btn fab dark small color="blue" @click="addEnvironment(match.id)">
+          <v-icon dark>add</v-icon>
+        </v-btn>
+      </v-layout>
+
+      <v-btn fab dark small color="blue" @click="addMatch()">
+          <v-icon dark>add</v-icon>
+      </v-btn>
+    </v-flex>
+  </div>
+
     <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
   </div>
 </template>
@@ -57,6 +134,7 @@ import listCompetitions from '~/apollo/queries/listCompetitions.gql'
 import updateCompetition from '~/apollo/mutations/updateCompetition.gql'
 import getUser from '~/apollo/queries/getUser.gql'
 import DatetimePicker from '~/components/DatetimePicker'
+
 export default {
   components: {
     DatetimePicker,
@@ -64,6 +142,9 @@ export default {
   data() {
     return {
       competition: {},
+      matches_delete: [],
+      environments_delete: [],
+      nextId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
       markdownOption: {
         bold: true,
         italic: true,
@@ -98,17 +179,70 @@ export default {
       await this.$apollo.mutate({
         mutation: updateCompetition,
         variables: {
-          id: this.$route.params.id,
-          new_id: this.competition.id,
-          public: this.competition.public,
-          open_at: dayjs(this.competition.open_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          close_at: dayjs(this.competition.close_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          description_en: this.competition.description_en,
-          description_ja: this.competition.description_ja,
+          competitions_pk_columns: { id: this.$route.params.id },
+          competitions_set: {
+            id: this.competition.id,
+            public: this.competition.public,
+            open_at: dayjs(this.competition.open_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            close_at: dayjs(this.competition.close_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            description_en: this.competition.description_en,
+            description_ja: this.competition.description_ja,
+          },
+
+          // delete existing matches as well as its environments and solutions
+          matches_delete: this.matches_delete.filter(m => m.id >= 0),
+
+          // update existing matches without environments
+          matches_updates: this.competition.matches.map(m => { return {
+            pk_columns: { id: m.id },
+            _set: {
+              name: m.name,
+              budget: m.budget,
+              problem: m.problem,
+              indicator: m.indicator,
+            },
+          }}),
+
+          // insert new matches with new environments
+          matches_insert: this.competition.matches.filter(m => m.id < 0).map(m => { return {
+            competition_id: this.competition.id,
+            name: m.name,
+            budget: m.budget,
+            problem: m.problem,
+            indicator: m.indicator,
+            environments: {
+              data: m.environments.map(e => { return {
+                public: e.public,
+                key: e.key,
+                value: e.value,
+              }}),
+            },
+          }}),
+
+          // delete existing environments of existing matches
+          environments_delete: this.environments_delete.filter(e => e.id >= 0),
+
+          // update existing environments of existing matches
+          environments_updates: this.competition.matches.flatMap(m => m.environments).filter(e => e.id >= 0).map(e => { return {
+            pk_columns: { id: e.id },
+            _set: {
+              public: e.public,
+              key: e.key,
+              value: e.value,
+            },
+          }}),
+
+          // insert new environments of existing matches
+          environments_insert: this.competition.matches.filter(m => m.id >= 0).flatMap(m => m.environments).filter(e => e.id < 0).map(e => { return {
+            match_id: e.match_id,
+            public: e.public,
+            key: e.key,
+            value: e.value,
+          }}),
         },
         refetchQueries: [
           { query: listCompetitions },
@@ -127,6 +261,41 @@ export default {
         ],
       })
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
+    },
+    addMatch () {
+      this.matches_insert.push({
+        id: nextId--,
+        name: '',
+        budget: 0,
+        problem: '',
+        indicator: '',
+        environments: []
+      })
+    },
+    removeMatch (id) {
+      const matches = this.competition.matches.filter((match) => { return match.id !== id })
+      this.competition.matches = matches
+      if (id >= 0) {
+        this.matches_delete.push(id)
+      }
+    },
+    addEnvironment (matchId) {
+      const match = this.competition.matches.find((match) => { return match.id == matchId })
+      match.environments.push({
+        match_id: matchId,
+        id: nextId--,
+        key: '',
+        value: '',
+        public: false
+      })
+    },
+    removeEnvironment (matchId, envId) {
+      const match = this.competition.matches.find((match) => { return match.id == matchId })
+      const envs = match.environments.filter((env) => { return env.id !== envId })
+      match.environments = envs
+      if (envId >= 0) {
+        this.environments_delete.push(envId)
+      }
     },
   },
   head() {
