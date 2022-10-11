@@ -171,11 +171,13 @@
 
 <script>
 import dayjs from 'dayjs'
-import getCompetition from '~/apollo/queries/getCompetition.gql'
-import listCompetitions from '~/apollo/queries/listCompetitions.gql'
-import updateCompetition from '~/apollo/mutations/updateCompetition.gql'
-import getUser from '~/apollo/queries/getUser.gql'
 import DatetimePicker from '~/components/DatetimePicker'
+import getCompetition from '~/apollo/queries/getCompetition.gql'
+import getUser from '~/apollo/queries/getUser.gql'
+import listCompetitions from '~/apollo/queries/listCompetitions.gql'
+import listIndicators from '~/apollo/queries/listIndicators.gql'
+import listProblems from '~/apollo/queries/listProblems.gql'
+import updateCompetition from '~/apollo/mutations/updateCompetition.gql'
 
 export default {
   components: {
