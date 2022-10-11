@@ -1,25 +1,25 @@
 mutation(
-  $id: String!
-  $public: Boolean!
-  $open_at: timestamptz!
-  $close_at: timestamptz!
-  $description_en: String!
-  $description_ja: String!
+  $competitions_insert_input: competitions_insert_input!
 ) {
   insert_competitions_one(
-    object: {
-      id: $id
-      public: $public
-      open_at: $open_at
-      close_at: $close_at
-      description_en: $description_en
-      description_ja: $description_ja
-    }
+    object: $competitions_insert_input
   ) {
     id
     public
     owner { name }
-    matches { name }
+    matches {
+      id
+      name
+      budget
+      problem_id
+      indicator_id
+      environments {
+        id
+        key
+        value
+        public
+      }
+    }
     open_at
     close_at
     created_at

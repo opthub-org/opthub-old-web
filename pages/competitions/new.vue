@@ -1,53 +1,169 @@
 <template>
-  <div>
-    <v-toolbar color="white" flat>
-      <v-toolbar-title class="headline">{{
-        $t('New Competition')
-      }}</v-toolbar-title>
-    </v-toolbar>
-
-    <v-text-field
-      v-model="competition.id"
-      :label="$t('ID')"
-      :hint="$t('2--32 characters')"
-      :placeholder="$t('eccomp2020')"
-    />
-    <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
-    <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
-
-    <v-radio-group v-model="competition.public">
-      <v-radio
-        :label="$t('Public')"
-        :value="true"
-      />
-      <v-radio
-        :label="$t('Private')"
-        :value="false"
-      />
-    </v-radio-group>
-
+  <v-container fluid>
+    <v-row>
+      <v-toolbar color="white" flat>
+        <v-toolbar-title class="headline">{{
+          $t('New Competition')
+        }}</v-toolbar-title>
+      </v-toolbar>
+    </v-row>
+    <v-row>
+      <v-col cols="4">
+        <v-text-field
+          v-model="competition.id"
+          :label="$t('ID')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('eccomp2020')"
+        />
+      </v-col>
+      <v-col cols="3">
+        <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
+      </v-col>
+      <v-col cols="3">
+        <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
+      </v-col>
+      <v-col cols="2">
+        <v-checkbox
+          v-model="competition.public"
+          :label="$t('Public')"
+          :hint="$t('Check to disclose this competition')"
+        />
+      </v-col>
+    </v-row>
     <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="competition.description_en"
-        language="en"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="competition.description_ja"
-        language="ja"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
+      <v-row>
+        <v-col>
+          <mavon-editor
+            v-if="$i18n.locale === 'en'"
+            v-model="competition.description_en"
+            language="en"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+          <mavon-editor
+            v-if="$i18n.locale === 'ja'"
+            v-model="competition.description_ja"
+            language="ja"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+        </v-col>
+      </v-row>
     </client-only>
-    <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
-  </div>
+
+    <v-row v-for="match in competition.matches" :key="match.id">
+      <v-card width="100%" class="ma-2">
+        <v-card-title>
+          {{ match.id >= 0 ? $t('Match ID: ') + match.id : $t('New Match: ') + (-match.id) }}
+        </v-card-title>
+        <v-container fluid>
+          <v-row>
+            <v-col cols="3">
+              <v-text-field
+                v-model="match.name"
+                :label="$t('Name')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('match1')"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-autocomplete
+                v-model="match.problem_id"
+                :items="problems"
+                :label="$t('Problem')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('problem1')"
+              />
+            </v-col>
+            <v-col cols="3">
+              <v-autocomplete
+                v-model="match.indicator_id"
+                :items="indicators"
+                :label="$t('Indicator')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('indicator1')"
+              />
+            </v-col>
+            <v-col cols="2">
+              <v-text-field
+                v-model="match.budget"
+                :label="$t('Budget')"
+                :hint="$t('Positive integer')"
+                :placeholder="$t('1000')"
+              />
+            </v-col>
+            <v-col cols="1">
+              <v-btn color="secondary" @click="removeMatch(match.id)">
+                {{ $t('Delete') }}
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-card outlined width="100%" class="ma-2">
+              <v-card-title>
+                {{ $t('Environments') }}
+              </v-card-title>
+              <v-container fluid>
+                <v-row v-for="env in match.environments" :key="env.id">
+                  <v-col cols="4">
+                    <v-text-field
+                      v-model="env.key"
+                      :label="$t('Key')"
+                      :hint="$t('2--32 characters')"
+                      :placeholder="$t('ENV_VAR')"
+                    />
+                  </v-col>
+                  <v-col cols="6">
+                    <v-text-field
+                      v-model="env.value"
+                      :label="$t('Value')"
+                      :hint="$t('2--32 characters')"
+                      :placeholder="$t('hoge')"
+                    />
+                  </v-col>
+                  <v-col cols="1">
+                    <v-checkbox
+                      v-model="env.public"
+                      :label="$t('Public')"
+                      :hint="$t('Check to disclose this variable')"
+                    />
+                  </v-col>
+                  <v-col cols="1">
+                    <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
+                      {{ $t('Delete') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col>
+                    <v-btn @click="addEnvironment(match.id)">
+                      {{ $t('Add environment') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn @click="addMatch()">
+          {{ $t('Add match') }}
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn :loading="submitting" color="primary" @click="submit">{{ $t('Submit') }}</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -116,7 +232,11 @@ Explain constraints here.
 
 ここに制約の説明を記述してください．
 `,
+        matches: [],
       },
+      problems: [],
+      indicators: [],
+      nextId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
       markdownOption: {
         bold: true,
         italic: true,
@@ -151,16 +271,33 @@ Explain constraints here.
       await this.$apollo.mutate({
         mutation: createCompetition,
         variables: {
-          id: this.competition.id,
-          public: this.competition.public,
-          open_at: dayjs(this.competition.open_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          close_at: dayjs(this.competition.close_at).format(
-            'YYYY-MM-DD HH:mm:ssZ'
-          ),
-          description_en: this.competition.description_en,
-          description_ja: this.competition.description_ja,
+          competitions_insert_input: {
+            id: this.competition.id,
+            public: this.competition.public,
+            open_at: dayjs(this.competition.open_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            close_at: dayjs(this.competition.close_at).format(
+              'YYYY-MM-DD HH:mm:ssZ'
+            ),
+            description_en: this.competition.description_en,
+            description_ja: this.competition.description_ja,
+            matches: {
+              data: this.competition.matches.map(m => { return {
+                name: m.name,
+                budget: m.budget,
+                problem_id: m.problem_id,
+                indicator_id: m.indicator_id,
+                environments: {
+                  data: m.environments.map(e => { return {
+                    key: e.key,
+                    value: e.value,
+                    public: e.public,
+                  }})
+                }
+              }}),
+            },
+          },
         },
         refetchQueries: [
           { query: listCompetitions },
@@ -176,6 +313,35 @@ Explain constraints here.
       })
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
+  },
+  addMatch () {
+    this.competition.matches.push({
+      id: this.nextId--,
+      name: '',
+      budget: '',
+      problem_id: '',
+      indicator_id: '',
+      environments: []
+    })
+  },
+  removeMatch (id) {
+    const matches = this.competition.matches.filter((match) => { return match.id !== id })
+    this.competition.matches = matches
+  },
+  addEnvironment (matchId) {
+    const match = this.competition.matches.find((match) => { return match.id == matchId })
+    match.environments.push({
+      match_id: matchId,
+      id: this.nextId--,
+      key: '',
+      value: '',
+      public: false
+    })
+  },
+  removeEnvironment (matchId, envId) {
+    const match = this.competition.matches.find((match) => { return match.id == matchId })
+    const envs = match.environments.filter((env) => { return env.id !== envId })
+    match.environments = envs
   },
   head() {
     return {
