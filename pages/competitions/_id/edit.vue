@@ -8,7 +8,7 @@
       </v-toolbar>
     </v-row>
     <v-row>
-      <v-col>
+      <v-col col="4">
         <v-text-field
           v-model="competition.id"
           :label="$t('ID')"
@@ -16,13 +16,13 @@
           :placeholder="$t('eccomp2020')"
         />
       </v-col>
-      <v-col>
+      <v-col col="3">
         <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
       </v-col>
-      <v-col>
+      <v-col col="3">
         <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
       </v-col>
-      <v-col>
+      <v-col col="2">
         <v-checkbox
           v-model="competition.public"
           :label="$t('Public')"
@@ -32,43 +32,37 @@
     </v-row>
     <client-only>
       <v-row>
-        <mavon-editor
-          v-if="$i18n.locale === 'en'"
-          v-model="competition.description_en"
-          language="en"
-          :box-shadow="false"
-          :style="'z-index: ' + zIndex"
-          :toolbars="markdownOption"
-          @fullScreen="fullscreen"
-        />
-        <mavon-editor
-          v-if="$i18n.locale === 'ja'"
-          v-model="competition.description_ja"
-          language="ja"
-          :box-shadow="false"
-          :style="'z-index: ' + zIndex"
-          :toolbars="markdownOption"
-          @fullScreen="fullscreen"
-        />
+        <v-col>
+          <mavon-editor
+            v-if="$i18n.locale === 'en'"
+            v-model="competition.description_en"
+            language="en"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+          <mavon-editor
+            v-if="$i18n.locale === 'ja'"
+            v-model="competition.description_ja"
+            language="ja"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+        </v-col>
       </v-row>
     </client-only>
-    <v-row>
-      <h2>{{ $t('Matches') }}</h2>
-    </v-row>
-    <v-row v-for="match in competition.matches" :key="match.id">
+
+    <v-row v-for="(match, i) in competition.matches" :key="match.id">
       <v-card width="100%" class="ma-2">
+        <v-card-title>
+          {{ match.id >= 0 ? $t('Match ID: ') + match.id : $t('New Match: ') + (i + 1 - competition.matches.length) }}
+        </v-card-title>
         <v-container fluid>
           <v-row>
-            <v-col>
-              <v-text-field
-                v-model="match.id"
-                :label="$t('ID')"
-                :hint="$t('positive integer')"
-                readonly
-                disabled
-              />
-            </v-col>
-            <v-col>
+            <v-col col="3">
               <v-text-field
                 v-model="match.name"
                 :label="$t('Name')"
@@ -76,15 +70,7 @@
                 :placeholder="$t('match1')"
               />
             </v-col>
-            <v-col>
-              <v-text-field
-                v-model="match.budget"
-                :label="$t('Budget')"
-                :hint="$t('Positive integer')"
-                :placeholder="$t('1000')"
-              />
-            </v-col>
-            <v-col>
+            <v-col col="3">
               <v-autocomplete
                 v-model="match.problem_id"
                 :items="problems"
@@ -93,7 +79,7 @@
                 :placeholder="$t('problem1')"
               />
             </v-col>
-            <v-col>
+            <v-col col="3">
               <v-autocomplete
                 v-model="match.indicator_id"
                 :items="indicators"
@@ -102,17 +88,28 @@
                 :placeholder="$t('indicator1')"
               />
             </v-col>
-            <v-col>
+            <v-col col="2">
+              <v-text-field
+                v-model="match.budget"
+                :label="$t('Budget')"
+                :hint="$t('Positive integer')"
+                :placeholder="$t('1000')"
+              />
+            </v-col>
+            <v-col col="1">
               <v-btn color="secondary" @click="removeMatch(match.id)">
                 {{ $t('Delete') }}
               </v-btn>
             </v-col>
           </v-row>
           <v-row>
-            <v-card width="100%" class="ma-2">
+            <v-card outlined width="100%" class="ma-2">
+              <v-card-title>
+                {{ $t('Environments') }}
+              </v-card-title>
               <v-container fluid>
                 <v-row v-for="env in match.environments" :key="env.id">
-                  <v-col>
+                  <v-col col="4">
                     <v-text-field
                       v-model="env.key"
                       :label="$t('Key')"
@@ -120,7 +117,7 @@
                       :placeholder="$t('ENV_VAR')"
                     />
                   </v-col>
-                  <v-col>
+                  <v-col col="6">
                     <v-text-field
                       v-model="env.value"
                       :label="$t('Value')"
@@ -128,14 +125,14 @@
                       :placeholder="$t('hoge')"
                     />
                   </v-col>
-                  <v-col>
+                  <v-col col="1">
                     <v-checkbox
                       v-model="env.public"
                       :label="$t('Public')"
                       :hint="$t('Check to disclose this variable')"
                     />
                   </v-col>
-                  <v-col>
+                  <v-col col="1">
                     <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
                       {{ $t('Delete') }}
                     </v-btn>
@@ -143,7 +140,7 @@
                 </v-row>
                 <v-row>
                   <v-col>
-                    <v-btn color="primary" @click="addEnvironment(match.id)">
+                    <v-btn @click="addEnvironment(match.id)">
                       {{ $t('Add environment') }}
                     </v-btn>
                   </v-col>
@@ -156,14 +153,14 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn color="primary" @click="addMatch()">
+        <v-btn @click="addMatch()">
           {{ $t('Add match') }}
         </v-btn>
       </v-col>
     </v-row>
     <v-row>
       <v-col>
-        <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
+        <v-btn :loading="submitting" color="primary" @click="submit">{{ $t('Submit') }}</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -312,7 +309,7 @@ export default {
       this.competition.matches.push({
         id: this.nextId--,
         name: '',
-        budget: 0,
+        budget: '',
         problem_id: '',
         indicator_id: '',
         environments: []
@@ -398,9 +395,11 @@ ja:
   Close at: 競技終了
   Delete: 削除
   Edit Competition: コンペティションを編集する
+  Environments: 環境変数
   ID: ID
   Key: キー
-  Matches: 競技
+  "Match ID: ": 競技ID：
+  "New Match: ": 新規競技：
   Name: 名前
   Open at: 競技開始
   Positive integer: 正の整数
