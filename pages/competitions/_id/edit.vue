@@ -139,15 +139,15 @@
                     </v-btn>
                   </v-col>
                 </v-row>
+                <v-row>
+                  <v-col>
+                    <v-btn color="primary" @click="addEnvironment(match.id)">
+                      {{ $t('Add environment') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
               </v-container>
             </v-card>
-          </v-row>
-          <v-row>
-            <v-col>
-              <v-btn color="primary" @click="addEnvironment(match.id)">
-                {{ $t('Add environment') }}
-              </v-btn>
-            </v-col>
           </v-row>
         </v-container>
       </v-card>
