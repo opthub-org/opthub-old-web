@@ -1,133 +1,171 @@
 <template>
-  <div>
-    <v-toolbar color="white" flat>
-      <v-toolbar-title class="headline">{{
-        $t('Edit Competition')
-      }}</v-toolbar-title>
-    </v-toolbar>
-
-    <v-text-field
-      v-model="competition.id"
-      :label="$t('ID')"
-      :hint="$t('2--32 characters')"
-      :placeholder="$t('eccomp2020')"
-    />
-    <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
-    <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
-
-    <v-radio-group v-model="competition.public">
-      <v-radio
-        :label="$t('Public')"
-        :value="true"
-      />
-      <v-radio
-        :label="$t('Private')"
-        :value="false"
-      />
-    </v-radio-group>
-
+  <v-container fluid>
+    <v-row>
+      <v-toolbar color="white" flat>
+        <v-toolbar-title class="headline">{{
+          $t('Edit Competition')
+        }}</v-toolbar-title>
+      </v-toolbar>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-text-field
+          v-model="competition.id"
+          :label="$t('ID')"
+          :hint="$t('2--32 characters')"
+          :placeholder="$t('eccomp2020')"
+        />
+      </v-col>
+      <v-col>
+        <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
+      </v-col>
+      <v-col>
+        <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
+      </v-col>
+      <v-col>
+        <v-radio-group v-model="competition.public">
+          <v-radio
+            :label="$t('Public')"
+            :value="true"
+          />
+          <v-radio
+            :label="$t('Private')"
+            :value="false"
+          />
+        </v-radio-group>
+      </v-col>
+    </v-row>
     <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="competition.description_en"
-        language="en"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="competition.description_ja"
-        language="ja"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
+      <v-row>
+        <mavon-editor
+          v-if="$i18n.locale === 'en'"
+          v-model="competition.description_en"
+          language="en"
+          :box-shadow="false"
+          :style="'z-index: ' + zIndex"
+          :toolbars="markdownOption"
+          @fullScreen="fullscreen"
+        />
+        <mavon-editor
+          v-if="$i18n.locale === 'ja'"
+          v-model="competition.description_ja"
+          language="ja"
+          :box-shadow="false"
+          :style="'z-index: ' + zIndex"
+          :toolbars="markdownOption"
+          @fullScreen="fullscreen"
+        />
+      </v-row>
     </client-only>
-
-    <h2>{{ $t('Matches') }}</h2>
-    <v-flex md class="ma-auto">
-      <v-layout row v-for="match in competition.matches" :key="match.id">
-        <v-card>
-          <v-text-field
-            v-model="match.id"
-            :label="$t('match ID')"
-            :hint="$t('positive integer')"
-            readonly
-            disabled
-          />
-          <v-text-field
-            v-model="match.name"
-            :label="$t('match name')"
-            :hint="$t('2--32 characters')"
-            :placeholder="$t('match1')"
-          />
-          <v-text-field
-            v-model="match.budget"
-            :label="$t('match budget')"
-            :hint="$t('positive integer')"
-            :placeholder="$t('1000')"
-          />
-          <v-text-field
-            v-model="match.problem.id"
-            :label="$t('match problem')"
-            :hint="$t('2--32 characters')"
-            :placeholder="$t('problem1')"
-          />
-          <v-text-field
-            v-model="match.indicator.id"
-            :label="$t('match indicator')"
-            :hint="$t('2--32 characters')"
-            :placeholder="$t('indicator1')"
-          />
-          
-          <v-btn icon color="secondary" @click="removeMatch(match.id)">
-              <v-icon dark>mdi-minus</v-icon>
-          </v-btn>
-
-          <v-flex md class="ma-auto">
-            <v-layout row v-for="env in match.environments" :key="env.id">
-              <v-card>
+    <v-row>
+      <h2>{{ $t('Matches') }}</h2>
+    </v-row>
+    <v-row v-for="match in competition.matches" :key="match.id">
+      <v-container>
+        <v-row>
+          <v-col>
+            <v-text-field
+              v-model="match.id"
+              :label="$t('match ID')"
+              :hint="$t('positive integer')"
+              readonly
+              disabled
+            />
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="match.name"
+              :label="$t('match name')"
+              :hint="$t('2--32 characters')"
+              :placeholder="$t('match1')"
+            />
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="match.budget"
+              :label="$t('match budget')"
+              :hint="$t('positive integer')"
+              :placeholder="$t('1000')"
+            />
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="match.problem.id"
+              :label="$t('match problem')"
+              :hint="$t('2--32 characters')"
+              :placeholder="$t('problem1')"
+            />
+          </v-col>
+          <v-col>
+            <v-text-field
+              v-model="match.indicator.id"
+              :label="$t('match indicator')"
+              :hint="$t('2--32 characters')"
+              :placeholder="$t('indicator1')"
+            />
+          </v-col>
+          <v-col>
+            <v-btn icon color="secondary" @click="removeMatch(match.id)">
+                <v-icon dark>mdi-minus</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-container>
+            <v-row v-for="env in match.environments" :key="env.id">
+              <v-col>
                 <v-text-field
                   v-model="env.key"
                   :label="$t('environment key')"
                   :hint="$t('2-32 characters')"
                   :placeholder="$t('environment key')"
                 />
+              </v-col>
+              <v-col>
                 <v-text-field
                   v-model="env.value"
                   :label="$t('environment value')"
                   :hint="$t('2--32 characters')"
                   :placeholder="$t('environment value')"
                 />
+              </v-col>
+              <v-col>
                 <v-checkbox
                   v-model="env.public"
                   :label="$t('Public')"
                   :hint="$t('boolean')"
                 />
-                
+              </v-col>
+              <v-col>
                 <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
                     <v-icon>mid-minus</v-icon>
                 </v-btn>      
-              </v-card>
-            </v-layout>
-          </v-flex>
-
-          <v-btn icon color="primary" @click="addEnvironment(match.id)">
-            <v-icon>mdi-plus</v-icon>
-          </v-btn>
-        </v-card>
-      </v-layout>
-
-      <v-btn icon color="primary" @click="addMatch()">
-          <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </v-flex>
-
-    <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
-  </div>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn icon color="primary" @click="addEnvironment(match.id)">
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-btn icon color="primary" @click="addMatch()">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
