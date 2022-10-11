@@ -480,35 +480,35 @@ opt list solutions --query "_and: [{match_id: {_eq: MATCH}}, {owner: {name: {_eq
       })
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
-  },
-  addMatch () {
-    this.competition.matches.push({
-      id: this.nextId--,
-      name: '',
-      budget: '',
-      problem_id: '',
-      indicator_id: '',
-      environments: []
-    })
-  },
-  removeMatch (id) {
-    const matches = this.competition.matches.filter((match) => { return match.id !== id })
-    this.competition.matches = matches
-  },
-  addEnvironment (matchId) {
-    const match = this.competition.matches.find((match) => { return match.id == matchId })
-    match.environments.push({
-      match_id: matchId,
-      id: this.nextId--,
-      key: '',
-      value: '',
-      public: false
-    })
-  },
-  removeEnvironment (matchId, envId) {
-    const match = this.competition.matches.find((match) => { return match.id == matchId })
-    const envs = match.environments.filter((env) => { return env.id !== envId })
-    match.environments = envs
+    addMatch () {
+      this.competition.matches.push({
+        id: this.nextId--,
+        name: '',
+        budget: '',
+        problem_id: '',
+        indicator_id: '',
+        environments: []
+      })
+    },
+    removeMatch (id) {
+      const matches = this.competition.matches.filter((match) => { return match.id !== id })
+      this.competition.matches = matches
+    },
+    addEnvironment (matchId) {
+      const match = this.competition.matches.find((match) => { return match.id == matchId })
+      match.environments.push({
+        match_id: matchId,
+        id: this.nextId--,
+        key: '',
+        value: '',
+        public: false
+      })
+    },
+    removeEnvironment (matchId, envId) {
+      const match = this.competition.matches.find((match) => { return match.id == matchId })
+      const envs = match.environments.filter((env) => { return env.id !== envId })
+      match.environments = envs
+    },
   },
   head() {
     return {
