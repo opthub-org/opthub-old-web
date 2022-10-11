@@ -216,7 +216,7 @@ export default {
     },
     async submit() {
       this.submitting = true
-      await this.$apollo.mutate({
+      const gql = {
         mutation: updateCompetition,
         variables: {
           competitions_pk_columns: { id: this.$route.params.id },
@@ -299,7 +299,9 @@ export default {
             },
           },
         ],
-      })
+      }
+      console.log(gql)
+      await this.$apollo.mutate(gql)
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
     addMatch () {
