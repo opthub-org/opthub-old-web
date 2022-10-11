@@ -85,16 +85,18 @@
               />
             </v-col>
             <v-col>
-              <v-text-field
+              <v-autocomplete
                 v-model="match.problem_id"
+                :items="problems"
                 :label="$t('Problem')"
                 :hint="$t('2--32 characters')"
                 :placeholder="$t('problem1')"
               />
             </v-col>
             <v-col>
-              <v-text-field
+              <v-autocomplete
                 v-model="match.indicator_id"
+                :items="indicators"
                 :label="$t('Indicator')"
                 :hint="$t('2--32 characters')"
                 :placeholder="$t('indicator1')"
@@ -182,6 +184,8 @@ export default {
   data() {
     return {
       competition: {},
+      problems: [],
+      indicators: [],
       matches_delete: [],
       environments_delete: [],
       nextId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
@@ -216,7 +220,7 @@ export default {
     },
     async submit() {
       this.submitting = true
-      const gql = {
+      await this.$apollo.mutate({
         mutation: updateCompetition,
         variables: {
           competitions_pk_columns: { id: this.$route.params.id },
@@ -299,9 +303,7 @@ export default {
             },
           },
         ],
-      }
-      console.log(gql)
-      await this.$apollo.mutate(gql)
+      })
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
     addMatch () {
@@ -366,6 +368,18 @@ export default {
           return this.competition
         }
       },
+    },
+    problems: {
+      query: listProblems,
+      update(data) {
+        return data.problems.map(p => p.id).sort()
+      }
+    },
+    indicators: {
+      query: listIndicators,
+      update(data) {
+        return data.indicators.map(i => i.id).sort()
+      }
     },
   },
 }
