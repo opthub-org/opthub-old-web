@@ -47,74 +47,78 @@
       />
     </client-only>
 
-    <h2>match</h2>
+    <h2>{{ $t('Matches') }}</h2>
     <v-flex md class="ma-auto">
       <v-layout row v-for="match in competition.matches" :key="match.id">
-        <v-text-field
-          v-model="match.id"
-          :label="$t('match ID')"
-          :hint="$t('positive integer')"
-          readonly
-          disabled
-        />
-        <v-text-field
-          v-model="match.name"
-          :label="$t('match name')"
-          :hint="$t('2--32 characters')"
-          :placeholder="$t('match1')"
-        />
-        <v-text-field
-          v-model="match.budget"
-          :label="$t('match budget')"
-          :hint="$t('positive integer')"
-          :placeholder="$t('1000')"
-        />
-        <v-text-field
-          v-model="match.problem.id"
-          :label="$t('match problem')"
-          :hint="$t('2--32 characters')"
-          :placeholder="$t('problem1')"
-        />
-        <v-text-field
-          v-model="match.indicator.id"
-          :label="$t('match indicator')"
-          :hint="$t('2--32 characters')"
-          :placeholder="$t('indicator1')"
-        />
-        
-        <v-btn icon color="secondary" @click="removeMatch(match.id)">
-            <v-icon dark>mdi-minus</v-icon>
-        </v-btn>
+        <v-card>
+          <v-text-field
+            v-model="match.id"
+            :label="$t('match ID')"
+            :hint="$t('positive integer')"
+            readonly
+            disabled
+          />
+          <v-text-field
+            v-model="match.name"
+            :label="$t('match name')"
+            :hint="$t('2--32 characters')"
+            :placeholder="$t('match1')"
+          />
+          <v-text-field
+            v-model="match.budget"
+            :label="$t('match budget')"
+            :hint="$t('positive integer')"
+            :placeholder="$t('1000')"
+          />
+          <v-text-field
+            v-model="match.problem.id"
+            :label="$t('match problem')"
+            :hint="$t('2--32 characters')"
+            :placeholder="$t('problem1')"
+          />
+          <v-text-field
+            v-model="match.indicator.id"
+            :label="$t('match indicator')"
+            :hint="$t('2--32 characters')"
+            :placeholder="$t('indicator1')"
+          />
+          
+          <v-btn icon color="secondary" @click="removeMatch(match.id)">
+              <v-icon dark>mdi-minus</v-icon>
+          </v-btn>
 
-        <v-flex md class="ma-auto">
-          <v-layout row v-for="env in match.environments" :key="env.id">
-            <v-text-field
-              v-model="env.key"
-              :label="$t('environment key')"
-              :hint="$t('2-32 characters')"
-              :placeholder="$t('environment key')"
-            />
-            <v-text-field
-              v-model="env.value"
-              :label="$t('environment value')"
-              :hint="$t('2--32 characters')"
-              :placeholder="$t('environment value')"
-            />
-            <v-checkbox
-              v-model="env.public"
-              :label="$t('public')"
-              :hint="$t('boolean')"
-            />
-            
-            <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
-                <v-icon>mid-minus</v-icon>
-            </v-btn>      
-          </v-layout>
-        </v-flex>
+          <v-flex md class="ma-auto">
+            <v-layout row v-for="env in match.environments" :key="env.id">
+              <v-card>
+                <v-text-field
+                  v-model="env.key"
+                  :label="$t('environment key')"
+                  :hint="$t('2-32 characters')"
+                  :placeholder="$t('environment key')"
+                />
+                <v-text-field
+                  v-model="env.value"
+                  :label="$t('environment value')"
+                  :hint="$t('2--32 characters')"
+                  :placeholder="$t('environment value')"
+                />
+                <v-checkbox
+                  v-model="env.public"
+                  :label="$t('Public')"
+                  :hint="$t('boolean')"
+                />
+                
+                <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
+                    <v-icon>mid-minus</v-icon>
+                </v-btn>      
+              </v-card>
+            </v-layout>
+          </v-flex>
 
-        <v-btn icon color="primary" @click="addEnvironment(match.id)">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
+          <v-btn icon color="primary" @click="addEnvironment(match.id)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-card>
       </v-layout>
 
       <v-btn icon color="primary" @click="addMatch()">
@@ -334,7 +338,9 @@ ja:
   Close at: 競技終了
   Edit Competition: コンペティションを編集する
   ID: ID
+  Matches: 競技
   Open at: 競技開始
+  positive integer: 正の整数
   Public: 公開
   Private: 非公開
   Submit: 送信
