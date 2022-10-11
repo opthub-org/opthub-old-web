@@ -100,8 +100,8 @@
             />
           </v-col>
           <v-col>
-            <v-btn icon color="secondary" @click="removeMatch(match.id)">
-                <v-icon dark>mdi-minus</v-icon>
+            <v-btn color="secondary" @click="removeMatch(match.id)">
+              {{ $t('Delete') }}
             </v-btn>
           </v-col>
         </v-row>
@@ -125,24 +125,24 @@
                 />
               </v-col>
               <v-col>
-                <v-checkbox
+                <v-simple-checkbox
                   v-model="env.public"
                   :label="$t('Public')"
                   :hint="$t('Check to disclose this variable')"
                 />
               </v-col>
               <v-col>
-                <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
-                  <v-icon>mid-minus</v-icon>
-                </v-btn>      
+                <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
+                  {{ $t('Delete') }}
+                </v-btn>
               </v-col>
             </v-row>
           </v-container>
         </v-row>
         <v-row>
           <v-col>
-            <v-btn icon color="primary" @click="addEnvironment(match.id)">
-              <v-icon>mdi-plus</v-icon>
+            <v-btn color="primary" @click="addEnvironment(match.id)">
+              {{ $t('Add environment') }}
             </v-btn>
           </v-col>
         </v-row>
@@ -150,8 +150,8 @@
     </v-row>
     <v-row>
       <v-col>
-        <v-btn icon color="primary" @click="addMatch()">
-          <v-icon>mdi-plus</v-icon>
+        <v-btn color="primary" @click="addMatch()">
+          {{ $t('Add match') }}
         </v-btn>
       </v-col>
     </v-row>
@@ -368,9 +368,12 @@ export default {
 <i18n lang="yaml">
 ja:
   2--32 characters: 2~32文字
+  Add environment: 環境変数を追加
+  Add match: 競技を追加
   Check to disclose this competition: チェックするとこのコンペティションを公開します
   Check to disclose this variable: チェックするとこの変数を公開します
   Close at: 競技終了
+  Delete: 削除
   Edit Competition: コンペティションを編集する
   ID: ID
   Matches: 競技
