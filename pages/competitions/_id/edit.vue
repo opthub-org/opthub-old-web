@@ -187,7 +187,8 @@ export default {
       indicators: [],
       matches_delete: [],
       environments_delete: [],
-      nextId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
+      nextMatchId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
+      nextEnvId: -1,  // Generates unique v-for keys by decrement since existing IDs in DB are positive
       markdownOption: {
         bold: true,
         italic: true,
@@ -307,7 +308,7 @@ export default {
     },
     addMatch () {
       this.competition.matches.push({
-        id: this.nextId--,
+        id: this.nextMatchId--,
         name: '',
         budget: '',
         problem_id: '',
@@ -326,7 +327,7 @@ export default {
       const match = this.competition.matches.find((match) => { return match.id == matchId })
       match.environments.push({
         match_id: matchId,
-        id: this.nextId--,
+        id: this.nextEnvId--,
         key: '',
         value: '',
         public: false
