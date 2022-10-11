@@ -167,8 +167,8 @@
 </template>
 
 <script>
-import competition_en from '~/content/competition_en.md'
-import competition_ja from '~/content/competition_ja.md'
+import competition_en from 'raw-loader!~/content/competition_en.md'
+import competition_ja from 'raw-loader!~/content/competition_ja.md'
 import createCompetition from '~/apollo/mutations/createCompetition.gql'
 import DatetimePicker from '~/components/DatetimePicker'
 import dayjs from 'dayjs'
