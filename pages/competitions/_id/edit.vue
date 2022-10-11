@@ -304,7 +304,7 @@ export default {
     },
     addMatch () {
       this.competition.matches.push({
-        id: nextId--,
+        id: this.nextId--,
         name: '',
         budget: 0,
         problem: { id: '' },
@@ -323,7 +323,7 @@ export default {
       const match = this.competition.matches.find((match) => { return match.id == matchId })
       match.environments.push({
         match_id: matchId,
-        id: nextId--,
+        id: this.nextId--,
         key: '',
         value: '',
         public: false
