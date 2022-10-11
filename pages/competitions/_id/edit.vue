@@ -56,6 +56,7 @@
           :label="$t('match ID')"
           :hint="$t('positive integer')"
           readonly
+          disabled
         />
         <v-text-field
           v-model="match.name"
@@ -70,20 +71,20 @@
           :placeholder="$t('1000')"
         />
         <v-text-field
-          v-model="match.problem"
+          v-model="match.problem.id"
           :label="$t('match problem')"
           :hint="$t('2--32 characters')"
           :placeholder="$t('problem1')"
         />
         <v-text-field
-          v-model="match.indicator"
+          v-model="match.indicator.id"
           :label="$t('match indicator')"
           :hint="$t('2--32 characters')"
           :placeholder="$t('indicator1')"
         />
         
-        <v-btn fab dark small color="red" @click="remove(match.id)">
-            <v-icon dark>remove</v-icon>
+        <v-btn icon color="secondary" @click="removeMatch(match.id)">
+            <v-icon dark>mdi-minus</v-icon>
         </v-btn>
 
         <v-flex md class="ma-auto">
@@ -106,19 +107,19 @@
               :hint="$t('boolean')"
             />
             
-            <v-btn fab dark small color="red" @click="removeEnvironment(match.id, env.key)">
-                <v-icon dark>remove</v-icon>
+            <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.key)">
+                <v-icon>mid-minus</v-icon>
             </v-btn>      
           </v-layout>
         </v-flex>
 
-        <v-btn fab dark small color="blue" @click="addEnvironment(match.id)">
-          <v-icon dark>add</v-icon>
+        <v-btn icon color="primary" @click="addEnvironment(match.id)">
+          <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-layout>
 
-      <v-btn fab dark small color="blue" @click="addMatch()">
-          <v-icon dark>add</v-icon>
+      <v-btn icon color="primary" @click="addMatch()">
+          <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-flex>
   </div>
