@@ -238,7 +238,7 @@ export default {
 
           // update existing matches without environments
           matches_updates: this.competition.matches.map(m => { return {
-            pk_columns: { id: m.id },
+            where: { id: { _eq: m.id } },
             _set: {
               name: m.name,
               budget: m.budget,
@@ -268,7 +268,7 @@ export default {
 
           // update existing environments of existing matches
           environments_updates: this.competition.matches.flatMap(m => m.environments).filter(e => e.id >= 0).map(e => { return {
-            pk_columns: { id: e.id },
+            where: { id: { _eq: e.id } },
             _set: {
               public: e.public,
               key: e.key,
