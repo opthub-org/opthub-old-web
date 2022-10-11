@@ -8,7 +8,7 @@
       </v-toolbar>
     </v-row>
     <v-row>
-      <v-col col="4">
+      <v-col cols="4">
         <v-text-field
           v-model="competition.id"
           :label="$t('ID')"
@@ -16,13 +16,13 @@
           :placeholder="$t('eccomp2020')"
         />
       </v-col>
-      <v-col col="3">
+      <v-col cols="3">
         <datetime-picker v-model="competition.open_at" :label="$t('Open at')" />
       </v-col>
-      <v-col col="3">
+      <v-col cols="3">
         <datetime-picker v-model="competition.close_at" :label="$t('Close at')" />
       </v-col>
-      <v-col col="2">
+      <v-col cols="2">
         <v-checkbox
           v-model="competition.public"
           :label="$t('Public')"
@@ -55,14 +55,14 @@
       </v-row>
     </client-only>
 
-    <v-row v-for="(match, i) in competition.matches" :key="match.id">
+    <v-row v-for="match in competition.matches" :key="match.id">
       <v-card width="100%" class="ma-2">
         <v-card-title>
-          {{ match.id >= 0 ? $t('Match ID: ') + match.id : $t('New Match: ') + (i + 1 - competition.matches.length) }}
+          {{ match.id >= 0 ? $t('Match ID: ') + match.id : $t('New Match: ') + (-match.id) }}
         </v-card-title>
         <v-container fluid>
           <v-row>
-            <v-col col="3">
+            <v-col cols="3">
               <v-text-field
                 v-model="match.name"
                 :label="$t('Name')"
@@ -70,7 +70,7 @@
                 :placeholder="$t('match1')"
               />
             </v-col>
-            <v-col col="3">
+            <v-col cols="3">
               <v-autocomplete
                 v-model="match.problem_id"
                 :items="problems"
@@ -79,7 +79,7 @@
                 :placeholder="$t('problem1')"
               />
             </v-col>
-            <v-col col="3">
+            <v-col cols="3">
               <v-autocomplete
                 v-model="match.indicator_id"
                 :items="indicators"
@@ -88,7 +88,7 @@
                 :placeholder="$t('indicator1')"
               />
             </v-col>
-            <v-col col="2">
+            <v-col cols="2">
               <v-text-field
                 v-model="match.budget"
                 :label="$t('Budget')"
@@ -96,7 +96,7 @@
                 :placeholder="$t('1000')"
               />
             </v-col>
-            <v-col col="1">
+            <v-col cols="1">
               <v-btn color="secondary" @click="removeMatch(match.id)">
                 {{ $t('Delete') }}
               </v-btn>
@@ -109,7 +109,7 @@
               </v-card-title>
               <v-container fluid>
                 <v-row v-for="env in match.environments" :key="env.id">
-                  <v-col col="4">
+                  <v-col cols="4">
                     <v-text-field
                       v-model="env.key"
                       :label="$t('Key')"
@@ -117,7 +117,7 @@
                       :placeholder="$t('ENV_VAR')"
                     />
                   </v-col>
-                  <v-col col="6">
+                  <v-col cols="6">
                     <v-text-field
                       v-model="env.value"
                       :label="$t('Value')"
@@ -125,14 +125,14 @@
                       :placeholder="$t('hoge')"
                     />
                   </v-col>
-                  <v-col col="1">
+                  <v-col cols="1">
                     <v-checkbox
                       v-model="env.public"
                       :label="$t('Public')"
                       :hint="$t('Check to disclose this variable')"
                     />
                   </v-col>
-                  <v-col col="1">
+                  <v-col cols="1">
                     <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
                       {{ $t('Delete') }}
                     </v-btn>
