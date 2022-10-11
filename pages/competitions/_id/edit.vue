@@ -56,97 +56,101 @@
       <h2>{{ $t('Matches') }}</h2>
     </v-row>
     <v-row v-for="match in competition.matches" :key="match.id">
-      <v-container>
-        <v-row>
-          <v-col>
-            <v-text-field
-              v-model="match.id"
-              :label="$t('match ID')"
-              :hint="$t('positive integer')"
-              readonly
-              disabled
-            />
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="match.name"
-              :label="$t('match name')"
-              :hint="$t('2--32 characters')"
-              :placeholder="$t('match1')"
-            />
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="match.budget"
-              :label="$t('match budget')"
-              :hint="$t('positive integer')"
-              :placeholder="$t('1000')"
-            />
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="match.problem.id"
-              :label="$t('match problem')"
-              :hint="$t('2--32 characters')"
-              :placeholder="$t('problem1')"
-            />
-          </v-col>
-          <v-col>
-            <v-text-field
-              v-model="match.indicator.id"
-              :label="$t('match indicator')"
-              :hint="$t('2--32 characters')"
-              :placeholder="$t('indicator1')"
-            />
-          </v-col>
-          <v-col>
-            <v-btn color="secondary" @click="removeMatch(match.id)">
-              {{ $t('Delete') }}
-            </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-container fluid>
-            <v-row v-for="env in match.environments" :key="env.id">
-              <v-col>
-                <v-text-field
-                  v-model="env.key"
-                  :label="$t('environment key')"
-                  :hint="$t('2-32 characters')"
-                  :placeholder="$t('ENV_VAR')"
-                />
-              </v-col>
-              <v-col>
-                <v-text-field
-                  v-model="env.value"
-                  :label="$t('environment value')"
-                  :hint="$t('2--32 characters')"
-                  :placeholder="$t('hoge')"
-                />
-              </v-col>
-              <v-col>
-                <v-simple-checkbox
-                  v-model="env.public"
-                  :label="$t('Public')"
-                  :hint="$t('Check to disclose this variable')"
-                />
-              </v-col>
-              <v-col>
-                <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
-                  {{ $t('Delete') }}
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-row>
-        <v-row>
-          <v-col>
-            <v-btn color="primary" @click="addEnvironment(match.id)">
-              {{ $t('Add environment') }}
-            </v-btn>
-          </v-col>
-        </v-row>
-      </v-container>
+      <v-card>
+        <v-container fluid>
+          <v-row>
+            <v-col>
+              <v-text-field
+                v-model="match.id"
+                :label="$t('match ID')"
+                :hint="$t('positive integer')"
+                readonly
+                disabled
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="match.name"
+                :label="$t('match name')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('match1')"
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="match.budget"
+                :label="$t('match budget')"
+                :hint="$t('positive integer')"
+                :placeholder="$t('1000')"
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="match.problem.id"
+                :label="$t('match problem')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('problem1')"
+              />
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="match.indicator.id"
+                :label="$t('match indicator')"
+                :hint="$t('2--32 characters')"
+                :placeholder="$t('indicator1')"
+              />
+            </v-col>
+            <v-col>
+              <v-btn color="secondary" @click="removeMatch(match.id)">
+                {{ $t('Delete') }}
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-card>
+              <v-container fluid>
+                <v-row v-for="env in match.environments" :key="env.id">
+                  <v-col>
+                    <v-text-field
+                      v-model="env.key"
+                      :label="$t('environment key')"
+                      :hint="$t('2-32 characters')"
+                      :placeholder="$t('ENV_VAR')"
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-text-field
+                      v-model="env.value"
+                      :label="$t('environment value')"
+                      :hint="$t('2--32 characters')"
+                      :placeholder="$t('hoge')"
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-checkbox
+                      v-model="env.public"
+                      :label="$t('Public')"
+                      :hint="$t('Check to disclose this variable')"
+                    />
+                  </v-col>
+                  <v-col>
+                    <v-btn color="secondary" @click="removeEnvironment(match.id, env.id)">
+                      {{ $t('Delete') }}
+                    </v-btn>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-btn color="primary" @click="addEnvironment(match.id)">
+                {{ $t('Add environment') }}
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
     </v-row>
     <v-row>
       <v-col>
