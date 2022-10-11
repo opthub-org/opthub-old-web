@@ -234,10 +234,10 @@ export default {
           },
 
           // delete existing matches as well as its environments and solutions
-          matches_delete: this.matches_delete.filter(m => m.id >= 0),
+          matches_delete: this.matches_delete.filter(id => id >= 0),
 
           // update existing matches without environments
-          matches_updates: this.competition.matches.map(m => { return {
+          matches_updates: this.competition.matches.filter(m => m.id >= 0).map(m => { return {
             where: { id: { _eq: m.id } },
             _set: {
               name: m.name,
@@ -264,7 +264,7 @@ export default {
           }}),
 
           // delete existing environments of existing matches
-          environments_delete: this.environments_delete.filter(e => e.id >= 0),
+          environments_delete: this.environments_delete.filter(id => id >= 0),
 
           // update existing environments of existing matches
           environments_updates: this.competition.matches.flatMap(m => m.environments).filter(e => e.id >= 0).map(e => { return {
