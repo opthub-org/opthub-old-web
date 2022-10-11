@@ -47,7 +47,6 @@
       />
     </client-only>
 
-    <div>
     <h2>match</h2>
     <v-flex md class="ma-auto">
       <v-layout row v-for="match in competition.matches" :key="match.id">
@@ -107,7 +106,7 @@
               :hint="$t('boolean')"
             />
             
-            <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.key)">
+            <v-btn icon color="secondary" @click="removeEnvironment(match.id, env.id)">
                 <v-icon>mid-minus</v-icon>
             </v-btn>      
           </v-layout>
@@ -122,7 +121,6 @@
           <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-flex>
-  </div>
 
     <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
   </div>
@@ -203,8 +201,8 @@ export default {
             _set: {
               name: m.name,
               budget: m.budget,
-              problem: m.problem,
-              indicator: m.indicator,
+              problem_id: m.problem.id,
+              indicator_id: m.indicator.id,
             },
           }}),
 
@@ -213,8 +211,8 @@ export default {
             competition_id: this.competition.id,
             name: m.name,
             budget: m.budget,
-            problem: m.problem,
-            indicator: m.indicator,
+            problem_id: m.problem.id,
+            indicator_id: m.indicator.id,
             environments: {
               data: m.environments.map(e => { return {
                 public: e.public,
@@ -264,12 +262,12 @@ export default {
       this.$router.push(this.localePath('/competitions/' + this.competition.id))
     },
     addMatch () {
-      this.matches_insert.push({
+      this.competition.matches.push({
         id: nextId--,
         name: '',
         budget: 0,
-        problem: '',
-        indicator: '',
+        problem: { id: '' },
+        indicator: { id: '' },
         environments: []
       })
     },
