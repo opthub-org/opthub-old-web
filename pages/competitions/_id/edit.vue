@@ -167,8 +167,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import DatetimePicker from '~/components/DatetimePicker'
+import dayjs from 'dayjs'
 import getCompetition from '~/apollo/queries/getCompetition.gql'
 import getUser from '~/apollo/queries/getUser.gql'
 import listCompetitions from '~/apollo/queries/listCompetitions.gql'
