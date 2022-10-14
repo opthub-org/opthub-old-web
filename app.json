@@ -1,0 +1,8 @@
+{
+  "name": "OptHub",
+  "description": "An optimization competition platform",
+  "repository": "https://github.com/opthub-org/opthub",
+  "logo": "https://cdn.rawgit.com/heroku/opthub/static/vuetify-logo.svg",
+  "keywords": ["opthub", "optimization", "competition"],
+  "image": "heroku/nodejs"
+}
