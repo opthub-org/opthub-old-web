@@ -1,5 +1,7 @@
 # OptHub
 
+OptHub is an optimization competition platform that supports the optimization community to register their optimization problems and evaluation metrics, organize their own competitions, and participate in them.
+
 ## Build Setup
 
 ```
