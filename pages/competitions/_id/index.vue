@@ -128,7 +128,7 @@ export default {
       )
     },
   },
-  mounted() {
+  updated() {
     // get an HTML element which has an id 'description' and set one's text as OGP description
     let ogpDescription = ''
     const descriptionElem = document.getElementById('description')
