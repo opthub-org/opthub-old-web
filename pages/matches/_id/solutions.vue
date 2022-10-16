@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getMatch from '~/apollo/queries/getMatch.gql'
 import listSolutions from '~/apollo/queries/listSolutions.gql'
 
@@ -89,22 +88,22 @@ export default {
       update(data) {
         try {
           return data.solutions.map((p) => {
-            p.evaluation_started_at = dayjs(p.evaluation_started_at)
+            p.evaluation_started_at = this.$dayjs(p.evaluation_started_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
-            p.evaluation_finished_at = dayjs(p.evaluation_finished_at)
+            p.evaluation_finished_at = this.$dayjs(p.evaluation_finished_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
-            p.scoring_started_at = dayjs(p.scoring_started_at)
+            p.scoring_started_at = this.$dayjs(p.scoring_started_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
-            p.scoring_finished_at = dayjs(p.scoring_finished_at)
+            p.scoring_finished_at = this.$dayjs(p.scoring_finished_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
-            p.created_at = dayjs(p.created_at)
+            p.created_at = this.$dayjs(p.created_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
-            p.updated_at = dayjs(p.updated_at)
+            p.updated_at = this.$dayjs(p.updated_at)
               .locale(this.$i18n.locale)
               .format('YYYY-MM-DD HH:mm:ss')
             return p

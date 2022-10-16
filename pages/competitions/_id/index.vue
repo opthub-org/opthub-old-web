@@ -61,32 +61,43 @@
     </ul>
 
     <h2 id="matches">{{ $t('Matches') }}</h2>
-    <v-simple-table>
-      <thead>
-        <tr>
-          <th>{{ $t('Match') }}</th>
-          <th>{{ $t('Problem') }}</th>
-          <th>{{ $t('Indicator') }}</th>
-          <th>{{ $t('Budget') }}</th>
-          <th>{{ $t('Created at') }}</th>
-          <th>{{ $t('Updated at') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="m in competition.matches" :key="m.id">
-          <td>
-            <nuxt-link :to="localePath('/matches/' + m.id)">{{
-              m.name
-            }}</nuxt-link>
-          </td>
-          <td>{{ m.problem ? m.problem.id : $t('(private)') }}</td>
-          <td>{{ m.indicator ? m.indicator.id : $t('(private)') }}</td>
-          <td>{{ m.budget }}</td>
-          <td>{{ $dayjs(m.created_at).locale($i18n.locale).fromNow() }}</td>
-          <td>{{ $dayjs(m.updated_at).locale($i18n.locale).fromNow() }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="[
+        { text: $t('Match'), value: 'name' },
+        { text: $t('Problem'), value: 'problem.id' },
+        { text: $t('Indicator'), value: 'indicator.id' },
+        { text: $t('Budget'), value: 'budget' },
+        { text: $t('Created at'), value: 'created_at' },
+        { text: $t('Updated at'), value: 'updated_at' },
+      ]"
+      :items="competition.matches"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.name="{ item }">
+        <nuxt-link :to="localePath('/matches/' + item.id)">{{ item.name }}</nuxt-link>
+      </template>
+      <template v-slot:item.problem.id="{ item }">
+        {{ item.problem ? item.problem.id : $t('(private)') }}
+      </template>
+      <template v-slot:item.indicator.id="{ item }">
+        {{ item.indicator ? item.indicator.id : $t('(private)') }}
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
   </div>
 </template>
 

@@ -55,34 +55,42 @@
     </ul>
 
     <h2>{{ $t('Used in') }}</h2>
-    <v-simple-table>
-      <thead>
-        <tr>
-          <th>{{ $t('Competition') }}</th>
-          <th>{{ $t('Match') }}</th>
-          <th>{{ $t('Owner') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="m in indicator.matches" :key="m.id">
-          <td>
-            <nuxt-link :to="localePath('/competitions/' + m.competition.id)">{{
-              m.competition.id
-            }}</nuxt-link>
-          </td>
-          <td>
-            <nuxt-link :to="localePath('/matches/' + m.id)">{{
-              m.name
-            }}</nuxt-link>
-          </td>
-          <td>
-            <nuxt-link :to="localePath('/users/' + m.competition.owner.name)">{{
-              m.competition.owner.name
-            }}</nuxt-link>
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="[
+        { text: $t('Competition'), value: 'competition.id' },
+        { text: $t('Match'), value: 'name' },
+        { text: $t('Owner'), value: 'competition.owner.name' },
+        { text: $t('Created at'), value: 'created_at' },
+        { text: $t('Updated at'), value: 'updated_at' },
+      ]"
+      :items="indicator.matches"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.competition.id="{ item }">
+        <nuxt-link :to="localePath('/competitions/' + item.competition.id)">{{ item.competition.id }}</nuxt-link>
+      </template>
+      <template v-slot:item.name="{ item }">
+        <nuxt-link :to="localePath('/matches/' + item.id)">{{ item.name }}</nuxt-link>
+      </template>
+      <template v-slot:item.competition.owner.name="{ item }">
+        <nuxt-link :to="localePath('/users/' + item.competition.owner.name)">{{ item.competition.owner.name }}</nuxt-link>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
   </div>
 </template>
 

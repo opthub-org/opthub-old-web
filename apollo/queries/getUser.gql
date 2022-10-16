@@ -21,7 +21,7 @@ query($name: String!) {
       created_at
       updated_at
     }
-    solutions(distinct_on: match_id) {
+    progress {
       match {
         id
         name
@@ -29,6 +29,14 @@ query($name: String!) {
           id
         }
       }
+      budget
+      submitted
+      scored
+      evaluation_error
+      scoring_error
+      scores
+      created_at
+      updated_at
     }
   }
 }

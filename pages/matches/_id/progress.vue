@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import gql from 'graphql-tag'
 import palette from 'google-palette'
 import getMatch from '~/apollo/queries/getMatch.gql'
@@ -154,10 +153,10 @@ export default {
             .sort((a, b) => a.score - b.score)
             .map((p, i) => {
               p.rank = i + 1
-              p.created_at = dayjs(p.created_at)
+              p.created_at = this.$dayjs(p.created_at)
                 .locale(this.$i18n.locale)
                 .format('YYYY-MM-DD HH:mm:ss')
-              p.updated_at = dayjs(p.updated_at)
+              p.updated_at = this.$dayjs(p.updated_at)
                 .locale(this.$i18n.locale)
                 .format('YYYY-MM-DD HH:mm:ss')
               return p

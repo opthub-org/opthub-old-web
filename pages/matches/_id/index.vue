@@ -31,28 +31,42 @@
 
     <h2>{{ $t('Environmental Variables') }}</h2>
     <p>{{ $t('envvar-text') }}</p>
-    <v-simple-table>
-      <thead>
-        <tr>
-          <th>{{ $t('Public') }}</th>
-          <th>{{ $t('Key') }}</th>
-          <th>{{ $t('Value') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="e in match.environments" :key="e.key">
-          <td>
-            <code>{{ e.public }}</code>
-          </td>
-          <td>
-            <code>{{ e.key }}</code>
-          </td>
-          <td>
-            <code>{{ e.value }}</code>
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="[
+        { text: $t('Key'), value: 'key' },
+        { text: $t('Value'), value: 'value' },
+        { text: $t('Public'), value: 'public' },
+        { text: $t('Created at'), value: 'created_at' },
+        { text: $t('Updated at'), value: 'updated_at' },
+      ]"
+      :items="match.environments"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.key="{ item }">
+        <code>{{ item.key }}</code>
+      </template>
+      <template v-slot:item.value="{ item }">
+        <code>{{ item.value }}</code>
+      </template>
+      <template v-slot:item.public="{ item }">
+        <code>{{ item.public }}</code>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
 
     <template v-if="match.problem">
       <h2>{{ $t('Problem') + ': ' + match.problem.id }}</h2>
@@ -129,7 +143,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getMatch from '~/apollo/queries/getMatch.gql'
 
 export default {

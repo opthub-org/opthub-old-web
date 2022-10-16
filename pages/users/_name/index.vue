@@ -9,96 +9,123 @@
     </dl>
 
     <h2>{{ $t('Played Matches') }}</h2>
-    <v-simple-table dense>
-      <thead>
-        <tr>
-          <th>{{ $t('Competition') }}</th>
-          <th>{{ $t('Match') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="s in user.solutions" :key="s.match.id">
-          <td>
-            <nuxt-link
-              :to="localePath('/competitions/' + s.match.competition.id)"
-              >{{ s.match.competition.id }}</nuxt-link
-            >
-          </td>
-          <td>
-            <nuxt-link :to="localePath('/matches/' + s.match.id)">{{
-              s.match.name
-            }}</nuxt-link>
-          </td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="[
+        { text: $t('Competition'), value: 'match.competition.id' },
+        { text: $t('Match'), value: 'match.name' },
+        { text: $t('Budget'), value: 'budget' },
+        { text: $t('Submitted'), value: 'submitted' },
+        { text: $t('Scored'), value: 'scored' },
+        { text: $t('Evaluation error'), value: 'evaluation_error' },
+        { text: $t('Scoring error'), value: 'scoring_error' },
+        { text: $t('Score'), value: 'score' },
+        { text: $t('Created at'), value: 'created_at' },
+        { text: $t('Updated at'), value: 'updated_at' },
+      ]"
+      :items="user.progress"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.match.competition.id="{ item }">
+        <nuxt-link :to="localePath('/competitions/' + item.match.competition.id)">{{ item.match.competition.id }}</nuxt-link>
+      </template>
+      <template v-slot:item.match.name="{ item }">
+        <nuxt-link :to="localePath('/matches/' + item.match.id)">{{ item.match.name }}</nuxt-link>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
 
     <h2>{{ $t('Owned Contents') }}</h2>
     <h3>{{ $t('Problems') }}</h3>
-    <v-simple-table dense>
-      <thead>
-        <tr>
-          <th>{{ $t('ID') }}</th>
-          <th>{{ $t('Created at') }}</th>
-          <th>{{ $t('Updated at') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="p in user.problems" :key="p.id">
-          <td>
-            <nuxt-link :to="localePath('/problems/' + p.id)">{{
-              p.id
-            }}</nuxt-link>
-          </td>
-          <td>{{ $dayjs(p.created_at).locale($i18n.locale).fromNow() }}</td>
-          <td>{{ $dayjs(p.updated_at).locale($i18n.locale).fromNow() }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="headers"
+      :items="user.problems"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.id="{ item }">
+        <nuxt-link :to="localePath('/problems/' + item.id)">{{ item.id }}</nuxt-link>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
 
     <h3>{{ $t('Indicators') }}</h3>
-    <v-simple-table dense>
-      <thead>
-        <tr>
-          <th>{{ $t('ID') }}</th>
-          <th>{{ $t('Created at') }}</th>
-          <th>{{ $t('Updated at') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="m in user.indicators" :key="m.id">
-          <td>
-            <nuxt-link :to="localePath('/indicators/' + m.id)">{{
-              m.id
-            }}</nuxt-link>
-          </td>
-          <td>{{ $dayjs(m.created_at).locale($i18n.locale).fromNow() }}</td>
-          <td>{{ $dayjs(m.updated_at).locale($i18n.locale).fromNow() }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="headers"
+      :items="user.indicators"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.id="{ item }">
+        <nuxt-link :to="localePath('/indicators/' + item.id)">{{ item.id }}</nuxt-link>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
 
     <h3>{{ $t('Competitions') }}</h3>
-    <v-simple-table dense>
-      <thead>
-        <tr>
-          <th>{{ $t('ID') }}</th>
-          <th>{{ $t('Created at') }}</th>
-          <th>{{ $t('Updated at') }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="c in user.competitions" :key="c.id">
-          <td>
-            <nuxt-link :to="localePath('/competitions/' + c.id)">{{
-              c.id
-            }}</nuxt-link>
-          </td>
-          <td>{{ $dayjs(c.created_at).locale($i18n.locale).fromNow() }}</td>
-          <td>{{ $dayjs(c.updated_at).locale($i18n.locale).fromNow() }}</td>
-        </tr>
-      </tbody>
-    </v-simple-table>
+    <v-data-table
+      :headers="headers"
+      :items="user.competitions"
+      :items-per-page="10"
+      :loading="$apollo.loading"
+      :footer-props="{
+        'items-per-page-options': [10, 20, 50, 100],
+        showFirstLastPage: true,
+      }"
+      multi-sort
+      :locale="$i18n.locale"
+      :loading-text="$t('loading')"
+      :no-data-text="$t('no data')"
+    >
+      <template v-slot:item.id="{ item }">
+        <nuxt-link :to="localePath('/competitions/' + item.id)">{{ item.id }}</nuxt-link>
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
+    </v-data-table>
   </div>
 </template>
 
@@ -111,6 +138,11 @@ export default {
   data() {
     return {
       user: {},
+      headers: [
+        { text: this.$t('ID'), value: 'id' },
+        { text: this.$t('Created at'), value: 'created_at' },
+        { text: this.$t('Updated at'), value: 'updated_at' },
+      ],
     }
   },
 
@@ -127,7 +159,12 @@ export default {
         return { name: this.$route.params.name }
       },
       update(data) {
-        return data.users[0]
+        const u = data.users[0]
+        u.progress.map(p => {
+          p.score = p.scores.filter(s => s !== null).slice(-1)[0]
+          return p
+        })
+        return u
       },
     },
   },
@@ -141,6 +178,12 @@ ja:
   Competition: コンペティション
   ID: ID
   Played Matches: 参加した競技
+  Budget: 評価回数
+  Submitted: 送信した解
+  Scored: 採点された解
+  Score: 得点
+  Evaluation error: 評価エラー
+  Scoring error: 採点エラー
   Owned Contents: 所有しているコンテンツ
   Competitions: コンペティション
   Problems: 問題
@@ -149,4 +192,6 @@ ja:
   Close at: 競技終了
   Created at: 作成日時
   Updated at: 更新日時
+  loading: 読込中
+  no data: データがありません
 </i18n>
