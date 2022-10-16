@@ -69,9 +69,17 @@ export default {
     return {
       title: this.$t('Welcome to EC Competition'),
       meta: [
-        { hid: 'og:title', property: 'og:title', content: this.$t('Welcome to EC Competition') },
-        { hid: 'og:description', property: 'og:description', content: this.$t('text-description') },
-      ]
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.$t('Welcome to EC Competition'),
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.$t('text-description'),
+        },
+      ],
     }
   },
 }

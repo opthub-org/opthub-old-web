@@ -6,7 +6,7 @@
       }}</v-toolbar-title>
       <v-spacer />
       <v-tooltip :z-index="!isEditable ? 0 : -1" left>
-        <template v-slot:activator="{ on, attrs }">
+        <template #activator="{ on, attrs }">
           <div v-on="on">
             <v-btn
               v-bind="attrs"
@@ -28,7 +28,7 @@
         v-model="competition.description_en"
         default-open="preview"
         language="en"
-        style="z-index: 1;"
+        style="z-index: 1"
         xss-options="{}"
         :box-shadow="false"
         :editable="false"
@@ -40,7 +40,7 @@
         v-model="competition.description_ja"
         default-open="preview"
         language="ja"
-        style="z-index: 1;"
+        style="z-index: 1"
         xss-options="{}"
         :box-shadow="false"
         :editable="false"
@@ -99,17 +99,25 @@ export default {
   data() {
     return {
       competition: {},
-      ogp_description: '',
+      ogpDescription: '',
     }
   },
-  mounted() {
-    // get an HTML element which has an id 'description' and set one's text as OGP description
-    let ogp_description = ''
-    let description_elem = document.getElementById('description')
-    if (description_elem !== null) {
-      ogp_description = description_elem.textContent
+  head() {
+    return {
+      title: this.$t('Competition') + ': ' + this.$route.params.id,
+      meta: [
+        {
+          hid: 'og:title',
+          property: 'og:title',
+          content: this.$t('Competition') + ': ' + this.$route.params.id,
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: this.ogpDescription,
+        },
+      ],
     }
-    this.ogp_description = ogp_description
   },
   computed: {
     isEditable() {
@@ -120,14 +128,14 @@ export default {
       )
     },
   },
-  head() {
-    return {
-      title: this.$t('Competition') + ': ' + this.$route.params.id,
-      meta: [
-        { hid: 'og:title', property: 'og:title', content: this.$t('Competition') + ': ' + this.$route.params.id },
-        { hid: 'og:description', property: 'og:description', content: this.ogp_description },
-      ]
+  mounted() {
+    // get an HTML element which has an id 'description' and set one's text as OGP description
+    let ogpDescription = ''
+    const descriptionElem = document.getElementById('description')
+    if (descriptionElem !== null) {
+      ogpDescription = descriptionElem.textContent
     }
+    this.ogpDescription = ogpDescription
   },
   apollo: {
     competition: {
