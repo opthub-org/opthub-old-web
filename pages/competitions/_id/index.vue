@@ -99,7 +99,17 @@ export default {
   data() {
     return {
       competition: {},
+      ogp_description: '',
     }
+  },
+  mounted() {
+    // get an HTML element which has an id 'description' and set one's text as OGP description
+    let ogp_description = ''
+    let description_elem = document.getElementById('description')
+    if (description_elem !== null) {
+      ogp_description = description_elem.textContent
+    }
+    this.ogp_description = ogp_description
   },
   computed: {
     isEditable() {
@@ -113,6 +123,10 @@ export default {
   head() {
     return {
       title: this.$t('Competition') + ': ' + this.$route.params.id,
+      meta: [
+        { hid: 'og:title', property: 'og:title', content: this.$t('Competition') + ': ' + this.$route.params.id },
+        { hid: 'og:description', property: 'og:description', content: this.ogp_description },
+      ]
     }
   },
   apollo: {
