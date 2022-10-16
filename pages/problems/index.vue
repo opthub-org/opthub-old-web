@@ -36,6 +36,12 @@
       <template v-slot:item.id="{ item }">
         <nuxt-link append :to="item.id">{{ item.id }}</nuxt-link>
       </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -75,20 +81,7 @@ export default {
         where: {},
       },
       update(data) {
-        try {
-          return data.problems.map((p) => {
-            p.created_at = dayjs(p.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.updated_at = dayjs(p.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return p
-          })
-        } catch (error) {
-          console.error(error)
-          return this.problems
-        }
+        return data.problems.sort()
       },
     },
   },

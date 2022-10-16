@@ -49,6 +49,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/apollo',
     '@nuxtjs/auth',
+    '@nuxtjs/dayjs',
     '@nuxtjs/i18n',
     '@nuxtjs/markdownit',
     '@nuxtjs/pwa',
@@ -97,6 +98,17 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {},
+  dayjs: {
+    locales: ['en', 'ja'],
+    defaultLocale: 'en',
+    defaultTimeZone: 'Asia/Tokyo',
+    plugins: [
+      'utc', // import 'dayjs/plugin/utc'
+      'timezone', // import 'dayjs/plugin/timezone'
+      'relativeTime', // import 'dayjs/plugin/relativeTimezone'
+      'localizedFormat', // import 'dayjs/plugin/localizedFormat'
+    ], // Your Day.js plugin
+  },
   i18n: {
     locales: [
       { code: 'ja', iso: 'ja-JP' },

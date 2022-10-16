@@ -22,8 +22,8 @@
       </v-tabs>
     </v-alert>
     <ul>
-      <li>{{ $t('Created at') + ': ' + match.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + match.updated_at }}</li>
+      <li>{{ $t('Created at') + ': ' + $dayjs(match.created_at).locale($i18n.locale).format('llll') }}</li>
+      <li>{{ $t('Updated at') + ': ' + $dayjs(match.updated_at).locale($i18n.locale).format('llll') }}</li>
     </ul>
 
     <h2>{{ $t('Budget') }}</h2>
@@ -82,8 +82,8 @@
       </client-only>
       <ul>
         <li>{{ $t('Owner') + ': ' + match.problem.owner.name }}</li>
-        <li>{{ $t('Created at') + ': ' + match.problem.created_at }}</li>
-        <li>{{ $t('Updated at') + ': ' + match.problem.updated_at }}</li>
+        <li>{{ $t('Created at') + ': ' + $dayjs(match.problem.created_at).locale($i18n.locale).fromNow() }}</li>
+        <li>{{ $t('Updated at') + ': ' + $dayjs(match.problem.updated_at).locale($i18n.locale).fromNow() }}</li>
       </ul>
     </template>
     <template v-else>
@@ -118,8 +118,8 @@
       </client-only>
       <ul>
         <li>{{ $t('Owner') + ': ' + match.indicator.owner.name }}</li>
-        <li>{{ $t('Created at') + ': ' + match.indicator.created_at }}</li>
-        <li>{{ $t('Updated at') + ': ' + match.indicator.updated_at }}</li>
+        <li>{{ $t('Created at') + ': ' + $dayjs(match.indicator.created_at).locale($i18n.locale).fromNow() }}</li>
+        <li>{{ $t('Updated at') + ': ' + $dayjs(match.indicator.updated_at).locale($i18n.locale).fromNow() }}</li>
       </ul>
     </template>
     <template v-else>
@@ -313,37 +313,7 @@ end`,
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const m = data.matches_by_pk
-          m.created_at = dayjs(m.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          m.updated_at = dayjs(m.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          const p = m.problem
-          if (p) {
-            p.created_at = dayjs(p.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.updated_at = dayjs(p.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-          }
-          const i = m.indicator
-          if (i) {
-            i.created_at = dayjs(i.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            i.updated_at = dayjs(i.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-          }
-          return m
-        } catch (error) {
-          console.error(error)
-          return this.match
-        }
+        return data.matches_by_pk
       },
     },
   },

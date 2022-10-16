@@ -50,14 +50,14 @@
     </client-only>
     <ul>
       <li>{{ $t('Owner') + ': ' + competition.owner.name }}</li>
-      <li>{{ $t('Created at') + ': ' + competition.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + competition.updated_at }}</li>
+      <li>{{ $t('Created at') + ': ' + $dayjs(competition.created_at).locale($i18n.locale).fromNow() }}</li>
+      <li>{{ $t('Updated at') + ': ' + $dayjs(competition.updated_at).locale($i18n.locale).fromNow() }}</li>
     </ul>
 
     <h2 id="important-dates">{{ $t('Important Dates') }}</h2>
     <ul>
-      <li>{{ $t('Open at') + ': ' + competition.open_at }}</li>
-      <li>{{ $t('Close at') + ': ' + competition.close_at }}</li>
+      <li>{{ $t('Open at') + ': ' + $dayjs(competition.open_at).locale($i18n.locale).format('llll') }}</li>
+      <li>{{ $t('Close at') + ': ' + $dayjs(competition.close_at).locale($i18n.locale).format('llll') }}</li>
     </ul>
 
     <h2 id="matches">{{ $t('Matches') }}</h2>
@@ -82,8 +82,8 @@
           <td>{{ m.problem ? m.problem.id : $t('(private)') }}</td>
           <td>{{ m.indicator ? m.indicator.id : $t('(private)') }}</td>
           <td>{{ m.budget }}</td>
-          <td>{{ m.created_at }}</td>
-          <td>{{ m.updated_at }}</td>
+          <td>{{ $dayjs(m.created_at).locale($i18n.locale).fromNow() }}</td>
+          <td>{{ $dayjs(m.updated_at).locale($i18n.locale).fromNow() }}</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getCompetition from '~/apollo/queries/getCompetition.gql'
 
 export default {
@@ -122,34 +121,7 @@ export default {
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const c = data.competitions_by_pk
-          c.open_at = dayjs(c.open_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm')
-          c.close_at = dayjs(c.close_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm')
-          c.created_at = dayjs(c.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          c.updated_at = dayjs(c.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          c.matches = c.matches.map((m) => {
-            m.created_at = dayjs(m.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            m.updated_at = dayjs(m.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return m
-          })
-          return c
-        } catch (error) {
-          console.error(error)
-          return this.competition
-        }
+        return data.competitions_by_pk
       },
     },
   },

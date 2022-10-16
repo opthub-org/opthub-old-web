@@ -22,12 +22,17 @@
           item.name
         }}</nuxt-link>
       </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import listUsers from '~/apollo/queries/listUsers.gql'
 
 export default {
@@ -59,20 +64,7 @@ export default {
         where: {},
       },
       update(data) {
-        try {
-          return data.users.map((u) => {
-            u.created_at = dayjs(u.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            u.updated_at = dayjs(u.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return u
-          })
-        } catch (error) {
-          console.error(error)
-          return this.users
-        }
+        return data.users.sort()
       },
     },
   },

@@ -168,7 +168,6 @@
 
 <script>
 import DatetimePicker from '~/components/DatetimePicker'
-import dayjs from 'dayjs'
 import getCompetition from '~/apollo/queries/getCompetition.gql'
 import getUser from '~/apollo/queries/getUser.gql'
 import listCompetitions from '~/apollo/queries/listCompetitions.gql'
@@ -227,10 +226,10 @@ export default {
           competitions_set: {
             id: this.competition.id,
             public: this.competition.public,
-            open_at: dayjs(this.competition.open_at).format(
+            open_at: this.$dayjs(this.competition.open_at).format(
               'YYYY-MM-DD HH:mm:ssZ'
             ),
-            close_at: dayjs(this.competition.close_at).format(
+            close_at: this.$dayjs(this.competition.close_at).format(
               'YYYY-MM-DD HH:mm:ssZ'
             ),
             description_en: this.competition.description_en,
@@ -354,19 +353,7 @@ export default {
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const c = data.competitions_by_pk
-          c.created_at = dayjs(c.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ssZ')
-          c.updated_at = dayjs(c.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ssZ')
-          return c
-        } catch (error) {
-          console.error(error)
-          return this.competition
-        }
+        return data.competitions_by_pk
       },
     },
     problems: {
