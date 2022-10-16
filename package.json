@@ -31,7 +31,7 @@
     "@nuxtjs/markdownit": "^2.0.0",
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/vuetify": "^1.12.3",
-    "chart.js": "^2.9.4",
+    "chart.js": "^3.9.1",
     "google-palette": "^1.1.0",
     "graphql-tag": "^2.12.6",
     "mavon-editor": "^2.10.4",
