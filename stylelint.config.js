@@ -2,6 +2,6 @@ module.exports = {
   extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
   // add your custom config here
   // https://stylelint.io/user-guide/configuration
-  customSyntax: "@stylelint/postcss-css-in-js",
+  customSyntax: '@stylelint/postcss-css-in-js',
   rules: {},
 }
