@@ -36,12 +36,23 @@
       <template v-slot:item.id="{ item }">
         <nuxt-link append :to="item.id">{{ item.id }}</nuxt-link>
       </template>
+      <template v-slot:item.open_at="{ item }">
+        {{ $dayjs(item.open_at).locale($i18n.locale).format('llll') }}
+      </template>
+      <template v-slot:item.close_at="{ item }">
+        {{ $dayjs(item.close_at).locale($i18n.locale).format('llll') }}
+      </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import listCompetitions from '~/apollo/queries/listCompetitions.gql'
 
 export default {
@@ -77,26 +88,7 @@ export default {
         where: {},
       },
       update(data) {
-        try {
-          return data.competitions.map((c) => {
-            c.open_at = dayjs(c.open_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm')
-            c.close_at = dayjs(c.close_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm')
-            c.created_at = dayjs(c.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            c.updated_at = dayjs(c.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return c
-          })
-        } catch (error) {
-          console.error(error)
-          return this.competitions
-        }
+        return data.competitions.sort()
       },
     },
   },

@@ -171,7 +171,6 @@ import competition_en from '!raw-loader!~/content/competition_en.md'
 import competition_ja from '!raw-loader!~/content/competition_ja.md'
 import createCompetition from '~/apollo/mutations/createCompetition.gql'
 import DatetimePicker from '~/components/DatetimePicker'
-import dayjs from 'dayjs'
 import getUser from '~/apollo/queries/getUser.gql'
 import listCompetitions from '~/apollo/queries/listCompetitions.gql'
 import listIndicators from '~/apollo/queries/listIndicators.gql'
@@ -182,7 +181,7 @@ export default {
     DatetimePicker,
   },
   data() {
-    const now = dayjs()
+    const now = this.$dayjs()
     return {
       competition: {
         id: 'eccomp2020',
@@ -234,10 +233,10 @@ export default {
           competitions_insert_input: {
             id: this.competition.id,
             public: this.competition.public,
-            open_at: dayjs(this.competition.open_at).format(
+            open_at: this.$dayjs(this.competition.open_at).format(
               'YYYY-MM-DD HH:mm:ssZ'
             ),
-            close_at: dayjs(this.competition.close_at).format(
+            close_at: this.$dayjs(this.competition.close_at).format(
               'YYYY-MM-DD HH:mm:ssZ'
             ),
             description_en: this.competition.description_en,

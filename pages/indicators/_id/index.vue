@@ -50,8 +50,8 @@
     <ul>
       <li>{{ $t('Owner') + ': ' + indicator.owner.name }}</li>
       <li>{{ $t('Image') + ': ' + indicator.image }}</li>
-      <li>{{ $t('Created at') + ': ' + indicator.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + indicator.updated_at }}</li>
+      <li>{{ $t('Created at') + ': ' + $dayjs(indicator.created_at).locale($i18n.locale).format('llll') }}</li>
+      <li>{{ $t('Updated at') + ': ' + $dayjs(indicator.updated_at).locale($i18n.locale).format('llll') }}</li>
     </ul>
 
     <h2>{{ $t('Used in') }}</h2>
@@ -87,8 +87,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getIndicator from '~/apollo/queries/getIndicator.gql'
+
 export default {
   auth: false,
   data() {
@@ -117,19 +117,7 @@ export default {
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const i = data.indicators_by_pk
-          i.created_at = dayjs(i.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          i.updated_at = dayjs(i.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          return i
-        } catch (error) {
-          console.error(error)
-          return this.indicator
-        }
+        return data.indicators_by_pk
       },
     },
   },

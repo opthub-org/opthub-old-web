@@ -36,12 +36,17 @@
       <template v-slot:item.id="{ item }">
         <nuxt-link append :to="item.id">{{ item.id }}</nuxt-link>
       </template>
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
     </v-data-table>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import listIndicators from '~/apollo/queries/listIndicators.gql'
 
 export default {
@@ -76,20 +81,7 @@ export default {
       },
 
       update(data) {
-        try {
-          return data.indicators.map((i) => {
-            i.created_at = dayjs(i.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            i.updated_at = dayjs(i.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return i
-          })
-        } catch (error) {
-          console.error(error)
-          return this.indicators
-        }
+        return data.indicators.sort()
       },
     },
   },

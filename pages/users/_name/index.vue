@@ -3,9 +3,9 @@
     <h1>{{ $t('User') + ': ' + user.name }}</h1>
     <dl>
       <dt>{{ $t('Created at') }}</dt>
-      <dd>{{ user.created_at }}</dd>
+      <dd>{{ $dayjs(user.created_at).locale($i18n.locale).format('llll') }}</dd>
       <dt>{{ $t('Updated at') }}</dt>
-      <dd>{{ user.updated_at }}</dd>
+      <dd>{{ $dayjs(user.updated_at).locale($i18n.locale).format('llll') }}</dd>
     </dl>
 
     <h2>{{ $t('Played Matches') }}</h2>
@@ -50,8 +50,8 @@
               p.id
             }}</nuxt-link>
           </td>
-          <td>{{ p.created_at }}</td>
-          <td>{{ p.updated_at }}</td>
+          <td>{{ $dayjs(p.created_at).locale($i18n.locale).fromNow() }}</td>
+          <td>{{ $dayjs(p.updated_at).locale($i18n.locale).fromNow() }}</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -72,8 +72,8 @@
               m.id
             }}</nuxt-link>
           </td>
-          <td>{{ m.created_at }}</td>
-          <td>{{ m.updated_at }}</td>
+          <td>{{ $dayjs(m.created_at).locale($i18n.locale).fromNow() }}</td>
+          <td>{{ $dayjs(m.updated_at).locale($i18n.locale).fromNow() }}</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -94,8 +94,8 @@
               c.id
             }}</nuxt-link>
           </td>
-          <td>{{ c.created_at }}</td>
-          <td>{{ c.updated_at }}</td>
+          <td>{{ $dayjs(c.created_at).locale($i18n.locale).fromNow() }}</td>
+          <td>{{ $dayjs(c.updated_at).locale($i18n.locale).fromNow() }}</td>
         </tr>
       </tbody>
     </v-simple-table>
@@ -103,7 +103,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getUser from '~/apollo/queries/getUser.gql'
 
 export default {
@@ -128,46 +127,7 @@ export default {
         return { name: this.$route.params.name }
       },
       update(data) {
-        try {
-          const u = data.users[0]
-          u.created_at = dayjs(u.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          u.updated_at = dayjs(u.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          u.problems = u.problems.map((p) => {
-            p.created_at = dayjs(p.craeted_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.updated_at = dayjs(p.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return p
-          })
-          u.indicators = u.indicators.map((i) => {
-            i.created_at = dayjs(i.craeted_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            i.updated_at = dayjs(i.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return i
-          })
-          u.competitions = u.competitions.map((c) => {
-            c.created_at = dayjs(c.craeted_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            c.updated_at = dayjs(c.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return c
-          })
-          return u
-        } catch (error) {
-          console.error(error)
-          return this.user
-        }
+        return data.users[0]
       },
     },
   },

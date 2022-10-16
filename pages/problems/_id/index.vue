@@ -50,8 +50,8 @@
     <ul>
       <li>{{ $t('Owner') + ': ' + problem.owner.name }}</li>
       <li>{{ $t('Image') + ': ' + problem.image }}</li>
-      <li>{{ $t('Created at') + ': ' + problem.created_at }}</li>
-      <li>{{ $t('Updated at') + ': ' + problem.updated_at }}</li>
+      <li>{{ $t('Created at') + ': ' + $dayjs(problem.created_at).locale($i18n.locale).format('llll') }}</li>
+      <li>{{ $t('Updated at') + ': ' + $dayjs(problem.updated_at).locale($i18n.locale).format('llll') }}</li>
     </ul>
 
     <h2>{{ $t('Used in') }}</h2>
@@ -87,8 +87,8 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getProblem from '~/apollo/queries/getProblem.gql'
+
 export default {
   auth: false,
   data() {
@@ -117,19 +117,7 @@ export default {
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const p = data.problems_by_pk
-          p.created_at = dayjs(p.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          p.updated_at = dayjs(p.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          return p
-        } catch (error) {
-          console.error(error)
-          return this.problem
-        }
+        return data.problems_by_pk
       },
     },
   },

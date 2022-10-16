@@ -56,11 +56,11 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import getIndicator from '~/apollo/queries/getIndicator.gql'
 import listIndicators from '~/apollo/queries/listIndicators.gql'
 import updateIndicator from '~/apollo/mutations/updateIndicator.gql'
 import getUser from '~/apollo/queries/getUser.gql'
+
 export default {
   data() {
     return {
@@ -137,19 +137,7 @@ export default {
         return { id: this.$route.params.id }
       },
       update(data) {
-        try {
-          const i = data.indicators_by_pk
-          i.created_at = dayjs(i.created_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          i.updated_at = dayjs(i.updated_at)
-            .locale(this.$i18n.locale)
-            .format('YYYY-MM-DD HH:mm:ss')
-          return i
-        } catch (error) {
-          console.error(error)
-          return this.indicator
-        }
+        return data.indicators_by_pk
       },
     },
   },
