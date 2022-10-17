@@ -9,7 +9,18 @@
     />
     <v-card>
       <v-data-table
-        :headers="headers"
+        :headers="[
+          { text: $t('Rank'), value: 'rank' },
+          { text: $t('User'), value: 'user.name' },
+          { text: $t('Score'), value: 'score' },
+          { text: $t('Submitted'), value: 'submitted' },
+          { text: $t('Evaluating'), value: 'evaluating' },
+          { text: $t('Evaluated'), value: 'evaluated' },
+          { text: $t('Scoring'), value: 'scoring' },
+          { text: $t('Scored'), value: 'scored' },
+          { text: $t('Registered'), value: 'created_at' },
+          { text: $t('Last Update'), value: 'updated_at' },
+        ]"
         :items="progress"
         :items-per-page="10"
         :loading="$apollo.loading"
@@ -51,18 +62,6 @@ export default {
   },
   data() {
     return {
-      headers: [
-        { text: this.$t('Rank'), value: 'rank' },
-        { text: this.$t('User'), value: 'user.name' },
-        { text: this.$t('Score'), value: 'score' },
-        { text: this.$t('Submitted'), value: 'submitted' },
-        { text: this.$t('Evaluating'), value: 'evaluating' },
-        { text: this.$t('Evaluated'), value: 'evaluated' },
-        { text: this.$t('Scoring'), value: 'scoring' },
-        { text: this.$t('Scored'), value: 'scored' },
-        { text: this.$t('Registered'), value: 'created_at' },
-        { text: this.$t('Last Update'), value: 'updated_at' },
-      ],
       match: {},
       progress: [],
     }
@@ -70,13 +69,12 @@ export default {
   computed: {
     chartdata() {
       const lab = new Array(this.match.budget).fill(1).map((n, i) => n + i)
-      const cols = palette('mpn65', Math.min(this.progress.length, 65)).map((hex) => '#' + hex)
-      const pal = this.progress.map((p, i) => cols[i % 65])
+      const pal = palette('mpn65', 65).map((hex) => '#' + hex)
       return {
         labels: lab,
         datasets: this.progress.map((p, i) => ({
           label: p.user.name,
-          borderColor: pal[i],
+          borderColor: pal[i % pal.length],
           data: p.scores,
         })),
       }

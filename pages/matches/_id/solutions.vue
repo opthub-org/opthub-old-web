@@ -2,7 +2,19 @@
   <div v-if="!$apollo.loading">
     <h1>{{ $t('Match') + ': ' + match.competition.id + ' ' + match.name }}</h1>
     <v-data-table
-      :headers="headers"
+      :headers="[
+        { text: $t('ID'), value: 'id' },
+        { text: $t('Variable'), value: 'variable' },
+        { text: $t('Objective'), value: 'objective' },
+        { text: $t('Constraint'), value: 'constraint' },
+        { text: $t('Score'), value: 'score' },
+        { text: $t('Created at'), value: 'created_at' },
+        { text: $t('Evaluation Started at'), value: 'evaluation_started_at' },
+        { text: $t('Evaluation Finished at'), value: 'evaluation_finished_at' },
+        { text: $t('Scoring Started at'), value: 'scoring_started_at' },
+        { text: $t('Scoring Finished at'), value: 'scoring_finished_at' },
+        { text: $t('Updated at'), value: 'updated_at' },
+      ]"
       :items="solutions"
       :items-per-page="10"
       :loading="$apollo.loading"
@@ -16,6 +28,24 @@
       :loading-text="$t('loading')"
       :no-data-text="$t('no data')"
     >
+      <template v-slot:item.created_at="{ item }">
+        {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.evaluation_started_at="{ item }">
+        {{ $dayjs(item.evaluation_started_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.evaluation_finished_at="{ item }">
+        {{ $dayjs(item.evaluation_finished_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.scoring_started_at="{ item }">
+        {{ $dayjs(item.scoring_started_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.scoring_finished_at="{ item }">
+        {{ $dayjs(item.scoring_finished_at).locale($i18n.locale).fromNow() }}
+      </template>
+      <template v-slot:item.updated_at="{ item }">
+        {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -27,25 +57,6 @@ import listSolutions from '~/apollo/queries/listSolutions.gql'
 export default {
   data() {
     return {
-      headers: [
-        { text: this.$t('ID'), value: 'id' },
-        { text: this.$t('Variable'), value: 'variable' },
-        { text: this.$t('Objective'), value: 'objective' },
-        { text: this.$t('Constraint'), value: 'constraint' },
-        { text: this.$t('Score'), value: 'score' },
-        { text: this.$t('Created at'), value: 'created_at' },
-        {
-          text: this.$t('Evaluation Started at'),
-          value: 'evaluation_started_at',
-        },
-        {
-          text: this.$t('Evaluation Finished at'),
-          value: 'evaluation_finished_at',
-        },
-        { text: this.$t('Scoring Started at'), value: 'scoring_started_at' },
-        { text: this.$t('Scoring Finished at'), value: 'scoring_finished_at' },
-        { text: this.$t('Updated at'), value: 'updated_at' },
-      ],
       match: {},
       solutions: [],
     }
@@ -87,27 +98,7 @@ export default {
       },
       update(data) {
         try {
-          return data.solutions.map((p) => {
-            p.evaluation_started_at = this.$dayjs(p.evaluation_started_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.evaluation_finished_at = this.$dayjs(p.evaluation_finished_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.scoring_started_at = this.$dayjs(p.scoring_started_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.scoring_finished_at = this.$dayjs(p.scoring_finished_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.created_at = this.$dayjs(p.created_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            p.updated_at = this.$dayjs(p.updated_at)
-              .locale(this.$i18n.locale)
-              .format('YYYY-MM-DD HH:mm:ss')
-            return p
-          })
+          return data.solutions.sort()
         } catch (error) {
           console.error(error)
           return this.solutions

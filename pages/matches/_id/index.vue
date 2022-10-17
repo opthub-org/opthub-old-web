@@ -5,6 +5,7 @@
         $t('Match') + ': ' + match.competition.id + ' ' + match.name
       }}</v-toolbar-title>
     </v-toolbar>
+    <nuxt-link append to="progress">{{ $t('Leaderboard') }}</nuxt-link>
 
     <v-alert type="info">
       {{ $t('How to submit a solution to this match') }}
@@ -353,4 +354,5 @@ ja:
   Updated at: 更新日時
   Public: 公開
   (private): （非公開）
+  Leaderboard: 順位表
 </i18n>
