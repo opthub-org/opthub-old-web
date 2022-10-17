@@ -27,6 +27,12 @@
             item.user.name
           }}</nuxt-link>
         </template>
+        <template v-slot:item.created_at="{ item }">
+          {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
+        </template>
+        <template v-slot:item.updated_at="{ item }">
+          {{ $dayjs(item.updated_at).locale($i18n.locale).fromNow() }}
+        </template>
       </v-data-table>
     </v-card>
   </div>
@@ -39,6 +45,7 @@ import getMatch from '~/apollo/queries/getMatch.gql'
 import LineChart from '~/components/LineChart.vue'
 
 export default {
+  auth: false,
   components: {
     LineChart,
   },
@@ -63,7 +70,8 @@ export default {
   computed: {
     chartdata() {
       const lab = new Array(this.match.budget).fill(1).map((n, i) => n + i)
-      const pal = palette('tol', this.progress.length).map((hex) => '#' + hex)
+      const cols = palette('mpn65', Math.min(this.progress.length, 65)).map((hex) => '#' + hex)
+      const pal = this.progress.map((p, i) => cols[i % 65])
       return {
         labels: lab,
         datasets: this.progress.map((p, i) => ({
@@ -139,26 +147,24 @@ export default {
           }
         }
       `,
-      variables: {
-        offset: 0,
-        limit: 20,
+      variables() {
+        return {
+          offset: 0,
+          limit: 100,
+          where: { match_id: { _eq: this.$route.params.id } },
+        }
       },
       update(data) {
         try {
           return data.progress
             .map((p) => {
+              p.scores = p.scores.filter(s => s !== null)
               p.score = p.scores[p.scores.length - 1]
               return p
             })
             .sort((a, b) => a.score - b.score)
             .map((p, i) => {
               p.rank = i + 1
-              p.created_at = this.$dayjs(p.created_at)
-                .locale(this.$i18n.locale)
-                .format('YYYY-MM-DD HH:mm:ss')
-              p.updated_at = this.$dayjs(p.updated_at)
-                .locale(this.$i18n.locale)
-                .format('YYYY-MM-DD HH:mm:ss')
               return p
             })
         } catch (error) {
