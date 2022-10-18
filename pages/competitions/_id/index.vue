@@ -109,10 +109,22 @@ export default {
   data() {
     return {
       competition: {},
-      ogpDescription: '',
     }
   },
   head() {
+    let descriptionText = null
+    if (this.$i18n.locale === 'ja') {
+      descriptionText = this.competition.description_ja
+    } else {
+      descriptionText = this.competition.description_en
+    }
+    const regexpSpanTag =
+      /<\s?span\s?(id\s?=\s?'description'|id\s?=\s?"description")\s?>(?<text>.*?)<\s?\/\s?span\s?>/
+    const match = regexpSpanTag.exec(descriptionText)
+    let description = ''
+    if (match !== null) {
+      description = match.groups.text
+    }
     return {
       title: this.$t('Competition') + ': ' + this.$route.params.id,
       meta: [
@@ -124,7 +136,7 @@ export default {
         {
           hid: 'og:description',
           property: 'og:description',
-          content: this.ogpDescription,
+          content: description,
         },
       ],
     }
@@ -137,15 +149,6 @@ export default {
           this.competition.owner.name
       )
     },
-  },
-  updated() {
-    // get an HTML element which has an id 'description' and set one's text as OGP description
-    let ogpDescription = ''
-    const descriptionElem = document.getElementById('description')
-    if (descriptionElem !== null) {
-      ogpDescription = descriptionElem.textContent
-    }
-    this.ogpDescription = ogpDescription
   },
   apollo: {
     competition: {
