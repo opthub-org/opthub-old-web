@@ -30,7 +30,11 @@ export default {
         content:
           'This is a website for Evolutionary Computation Competition (EC-Comp).',
       },
-      { hid: 'og:image', property: 'og:image', content: 'https://ec-comp.jpnsec.org/icon.png' },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: 'https://ec-comp.jpnsec.org/icon.png',
+      },
       { name: 'twitter:card', content: 'summary' },
     ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
