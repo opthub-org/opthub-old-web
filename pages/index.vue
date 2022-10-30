@@ -92,6 +92,10 @@ en:
   text-play: Anyone can play a competition. Try a 30-minute tutorial to learn how to play.
   text-organize: Anyone can organize their own competition. Let's sign in and create a new competition.
   text-description: Evolutionary Computation Competition (EC-Comp) is an optimization competition held by Special Interest Group of Real-world Benchmark Problems, Japan Society for Evolutionary Computation (JPNSEC SIG-RBP).
+  Welcome to EC Competition: Welcome to EC Competition
+  How to play a competition: How to play a competition
+  How to organize a competition: How to organize a competition
+  Get Started: Get Started
 ja:
   text-par1: 進化計算コンペティションは，<a href="{sigrbp}">進化計算学会 実世界ベンチマーク問題分科会</a>が開催する最適化コンペティションです．与えられた最適化問題に対して，誰が最も優れた近似最適解を見つけられるかを競います．2017年に始まり，毎年9月～11月に開催されます．競技の結果は12月の<a href="{ecsymp}">進化計算シンポジウム</a>で発表します．
   text-par2: 本コンペティションの最大の特徴は，産業や科学の現場で現れるリアルな最適化問題が出題されることです．例年，企業や研究機関などで実際に使われている最適化問題を募集し，出題しています．最適化は社会の様々な場面で使われていますが，そのような事例が公開されることはなかなかありません．本コンペティションを通して実社会で現れる最適化問題に関する知見を収集・共有することにより，最適化の産業応用と学術研究を促進します．
