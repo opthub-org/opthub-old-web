@@ -3,6 +3,7 @@ query($id: Int!) {
     id
     name
     budget
+    public
     environments {
       id
       public

@@ -11,6 +11,7 @@ mutation(
       id
       name
       budget
+      public
       problem_id
       indicator_id
       environments {

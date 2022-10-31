@@ -30,30 +30,6 @@
         />
       </v-col>
     </v-row>
-    <client-only>
-      <v-row>
-        <v-col>
-          <mavon-editor
-            v-if="$i18n.locale === 'en'"
-            v-model="competition.description_en"
-            language="en"
-            :box-shadow="false"
-            :style="'z-index: ' + zIndex"
-            :toolbars="markdownOption"
-            @fullScreen="fullscreen"
-          />
-          <mavon-editor
-            v-if="$i18n.locale === 'ja'"
-            v-model="competition.description_ja"
-            language="ja"
-            :box-shadow="false"
-            :style="'z-index: ' + zIndex"
-            :toolbars="markdownOption"
-            @fullScreen="fullscreen"
-          />
-        </v-col>
-      </v-row>
-    </client-only>
 
     <v-row v-for="match in competition.matches" :key="match.id">
       <v-card width="100%" class="ma-2">
@@ -88,12 +64,19 @@
                 :placeholder="$t('indicator1')"
               />
             </v-col>
-            <v-col cols="2">
+            <v-col cols="1">
               <v-text-field
                 v-model="match.budget"
                 :label="$t('Budget')"
                 :hint="$t('Positive integer')"
                 :placeholder="$t('1000')"
+              />
+            </v-col>
+            <v-col cols="1">
+              <v-checkbox
+                v-model="match.public"
+                :label="$t('Public Leaderboard')"
+                :hint="$t('Check to disclose the leaderboard of this match')"
               />
             </v-col>
             <v-col cols="1">
@@ -158,6 +141,32 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <client-only>
+      <v-row>
+        <v-col>
+          <mavon-editor
+            v-if="$i18n.locale === 'en'"
+            v-model="competition.description_en"
+            language="en"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+          <mavon-editor
+            v-if="$i18n.locale === 'ja'"
+            v-model="competition.description_ja"
+            language="ja"
+            :box-shadow="false"
+            :style="'z-index: ' + zIndex"
+            :toolbars="markdownOption"
+            @fullScreen="fullscreen"
+          />
+        </v-col>
+      </v-row>
+    </client-only>
+
     <v-row>
       <v-col>
         <v-btn :loading="submitting" color="primary" @click="submit">{{ $t('Submit') }}</v-btn>
@@ -247,6 +256,7 @@ export default {
               budget: m.budget,
               problem_id: m.problem_id,
               indicator_id: m.indicator_id,
+              public: m.public,
             },
           }}),
 
@@ -257,6 +267,7 @@ export default {
             budget: m.budget,
             problem_id: m.problem_id,
             indicator_id: m.indicator_id,
+            public: m.public,
             environments: {
               data: m.environments.map(e => { return {
                 public: e.public,
@@ -312,7 +323,8 @@ export default {
         budget: '',
         problem_id: '',
         indicator_id: '',
-        environments: []
+        public: false,
+        environments: [],
       })
     },
     removeMatch (id) {
@@ -329,7 +341,7 @@ export default {
         id: this.nextEnvId--,
         key: '',
         value: '',
-        public: false
+        public: false,
       })
     },
     removeEnvironment (matchId, envId) {
@@ -378,6 +390,7 @@ ja:
   Add environment: 環境変数を追加
   Add match: 競技を追加
   Budget: 評価回数
+  Check to disclose the leaderboard of this match: チェックするとこの競技の順位表を公開します
   Check to disclose this competition: チェックするとこのコンペティションを公開します
   Check to disclose this variable: チェックするとこの変数を公開します
   Close at: 競技終了
@@ -392,6 +405,7 @@ ja:
   Open at: 競技開始
   Positive integer: 正の整数
   Public: 公開
+  Public Leaderboard: 順位表を公開
   Problem: 問題
   Indicator: 指標
   Submit: 送信
