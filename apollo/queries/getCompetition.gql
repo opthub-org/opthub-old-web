@@ -13,6 +13,7 @@ query($id: String!) {
       id
       name
       budget
+      public
       created_at
       updated_at
       problem_id
