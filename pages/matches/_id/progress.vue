@@ -7,7 +7,7 @@
       :options="options"
       :styles="chartstyles"
     />
-    <p>{{ t(isLeaderboardPublic ? "All players' scores" : 'Your scores') }}</p>
+    <p>{{ $t(isLeaderboardPublic ? "All players' scores" : 'Your scores') }}</p>
     <v-card>
       <v-data-table
         :headers="[
