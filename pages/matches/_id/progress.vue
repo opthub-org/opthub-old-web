@@ -7,6 +7,7 @@
       :options="options"
       :styles="chartstyles"
     />
+    <p>{{ t(isLeaderboardPublic() ? "All players' scores" : 'Your scores') }}</p>
     <v-card>
       <v-data-table
         :headers="[
@@ -94,6 +95,15 @@ export default {
       return {
         width: '100%',
       }
+    },
+    isLeaderboardPublic() {
+      return this.match.public || this.isCompetitionClosed() || this.isCompetitionOwned()
+    },
+    isCompetitionClosed() {
+      return this.competition.close_at < this.$dayjs()
+    },
+    isCompetitionOwned() {
+      return this.competition.owner.name === this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username']
     },
   },
   head() {
@@ -190,6 +200,8 @@ ja:
   Scored: 採点済
   Registered: 参加日時
   Last Update: 最終更新
+  All players' scores: 全プレイヤーのスコアの推移
+  Your scores: あなたのスコアの推移
   loading: 読込中
   no data: データがありません
 </i18n>
