@@ -178,6 +178,7 @@ ja:
   Problem: 問題
   Indicator: 指標
   Budget: 評価回数
+  Leaderboard: 順位表
   Open at: 競技開始
   Close at: 競技終了
   Created at: 作成日時
