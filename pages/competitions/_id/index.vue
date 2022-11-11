@@ -67,6 +67,7 @@
         { text: $t('Problem'), value: 'problem.id' },
         { text: $t('Indicator'), value: 'indicator.id' },
         { text: $t('Budget'), value: 'budget' },
+        { text: $t('Leaderboard'), value: 'public' },
         { text: $t('Created at'), value: 'created_at' },
         { text: $t('Updated at'), value: 'updated_at' },
       ]"
@@ -90,6 +91,9 @@
       </template>
       <template v-slot:item.indicator.id="{ item }">
         {{ item.indicator ? item.indicator.id : $t('(private)') }}
+      </template>
+      <template v-slot:item.public="{ item }">
+        {{ $t(item.public ? 'public' : 'private') }}
       </template>
       <template v-slot:item.created_at="{ item }">
         {{ $dayjs(item.created_at).locale($i18n.locale).fromNow() }}
@@ -185,4 +189,6 @@ ja:
   loading: 読込中
   no data: データがありません
   (private): （非公開）
+  public: 公開
+  private: 非公開
 </i18n>
