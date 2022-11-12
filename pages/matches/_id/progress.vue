@@ -100,10 +100,10 @@ export default {
       return this.match.public || this.isCompetitionClosed() || this.isCompetitionOwned()
     },
     isCompetitionClosed() {
-      return this.competition.close_at < this.$dayjs()
+      return this.match.competition.close_at < this.$dayjs()
     },
     isCompetitionOwned() {
-      return this.competition.owner.name === this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username']
+      return this.match.competition.owner.name === this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username']
     },
   },
   head() {
