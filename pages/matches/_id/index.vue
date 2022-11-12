@@ -14,9 +14,16 @@
           <v-tab :key="e.lang">{{ e.lang }}</v-tab>
           <v-tab-item :key="e.lang">
             <v-card>
-              <v-card-text>
-                <pre>{{ e.code }}</pre>
-              </v-card-text>
+              <v-textarea
+                :value="e.code"
+                solo
+                hide-details
+                auto-grow
+                readonly
+                :rows="e.code.split(/\r\n|\r|\n/).length"
+                :append-icon="`${copyIcon}`"
+                @click:append="copyToClipboard(e.code)"
+              />
             </v-card>
           </v-tab-item>
         </template>
@@ -151,11 +158,12 @@ export default {
 
   data() {
     return {
+      copyIcon: 'mdi-content-copy',
       match: {},
       examples: [
         {
           lang: 'Shell',
-          code: `$ echo 'YOUR_SOLUTION' | opt submit --match=${this.$route.params.id}`,
+          code: `echo 'YOUR_SOLUTION' | opt submit --match=${this.$route.params.id}`,
         },
         {
           lang: 'Python',
@@ -320,6 +328,15 @@ end`,
     }
   },
 
+  methods: {
+    copyToClipboard(text) {
+      navigator.clipboard.writeText(text)
+      this.copyIcon = 'mdi-check'
+      setTimeout(() => {
+        this.copyIcon = 'mdi-content-copy'
+      }, 1000)
+    },
+  },
   apollo: {
     match: {
       query: getMatch,
