@@ -11,16 +11,19 @@
     <v-card>
       <v-data-table
         :headers="[
-          { text: $t('Rank'), value: 'rank' },
+          { text: $t('Rank'), value: 'rank', align: 'end' },
           { text: $t('User'), value: 'user.name' },
-          { text: $t('Score'), value: 'score' },
-          { text: $t('Submitted'), value: 'submitted' },
-          { text: $t('Evaluating'), value: 'evaluating' },
-          { text: $t('Evaluated'), value: 'evaluated' },
-          { text: $t('Scoring'), value: 'scoring' },
-          { text: $t('Scored'), value: 'scored' },
-          { text: $t('Registered'), value: 'created_at' },
-          { text: $t('Last Update'), value: 'updated_at' },
+          { text: $t('Score'), value: 'score', align: 'end' },
+          { text: $t('Submitted'), value: 'submitted', align: 'end' },
+          { text: $t('Evaluating'), value: 'evaluating', align: 'end' },
+          { text: $t('Evaluated'), value: 'evaluated', align: 'end' },
+          { text: $t('Evaluation error'), value: 'evaluation_error', align: 'end' },
+          { text: $t('Scoring'), value: 'scoring', align: 'end' },
+          { text: $t('Scored'), value: 'scored', align: 'end' },
+          { text: $t('Scoring error'), value: 'scoring_error', align: 'end' },
+          { text: $t('Budget left'), value: 'budget_left', align: 'end' },
+          { text: $t('Registered'), value: 'created_at', align: 'end' },
+          { text: $t('Last Update'), value: 'updated_at', align: 'end' },
         ]"
         :items="progress"
         :items-per-page="10"
@@ -148,8 +151,10 @@ export default {
             submitted
             evaluating
             evaluated
+            evaluation_error
             scoring
             scored
+            scoring_error
             created_at
             updated_at
           }
@@ -168,6 +173,7 @@ export default {
             .map((p) => {
               p.scores = p.scores.filter(s => s !== null)
               p.score = p.scores[p.scores.length - 1]
+              p.budget_left = p.budget - p.scored + p.scoring_error
               return p
             })
             .sort((a, b) => a.score - b.score)
@@ -189,6 +195,7 @@ export default {
 ja:
   Progress: 進行状況
   Budget: 評価回数
+  Budget left: 残り評価回数
   Match: 競技
   Rank: 順位
   User: プレイヤー
@@ -196,8 +203,10 @@ ja:
   Submitted: 送信済
   Evaluating: 評価中
   Evaluated: 評価済
+  Evaluation error: 評価エラー
   Scoring: 採点中
   Scored: 採点済
+  Scoring error: 採点エラー
   Registered: 参加日時
   Last Update: 最終更新
   All players' scores: 全プレイヤーのスコアの推移
