@@ -97,7 +97,7 @@ export default {
       }
     },
     isLeaderboardPublic() {
-      return this.match.public || this.isCompetitionClosed() || this.isCompetitionOwned()
+      return this.match.public || this.isCompetitionClosed || this.isCompetitionOwned
     },
     isCompetitionClosed() {
       return this.match.competition.close_at < this.$dayjs()
