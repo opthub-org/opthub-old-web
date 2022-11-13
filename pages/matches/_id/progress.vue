@@ -4,9 +4,11 @@
     <p>{{ $t('Budget') + ': ' + match.budget }}</p>
     <line-chart
       :chart-data="chartdata"
-      :options="options"
+      :chart-options="options"
       :styles="chartstyles"
+      ref="lineChart"
     />
+    <v-btn @click="$refs.lineChart.getCurrentChart().resetZoom()">{{ $t('Reset zoom') }}</v-btn>
     <p>{{ $t(isLeaderboardPublic ? "All players' scores" : 'Your scores') }}</p>
     <v-card>
       <v-data-table
@@ -57,13 +59,9 @@
 import gql from 'graphql-tag'
 import palette from 'google-palette'
 import getMatch from '~/apollo/queries/getMatch.gql'
-import LineChart from '~/components/LineChart.vue'
 
 export default {
   auth: false,
-  components: {
-    LineChart,
-  },
   data() {
     return {
       match: {},
@@ -86,8 +84,65 @@ export default {
     options() {
       return {
         maintainAspectRatio: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label(context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                    label += ': ';
+                }
+                if (context.parsed.y !== null) {
+                    label += context.parsed.y.toExponential(4)
+                }
+                return label
+              },
+            },
+          },
+          zoom: {
+            pan: {
+              enabled: true,
+              modifierKey: 'ctrl',
+            },
+            zoom: {
+              overScaleMode: 'xy',
+              wheel: {
+                enabled: true,
+              },
+              drag: {
+                enabled: true,
+                borderWidth: 1,
+              },
+              pinch: {
+                enabled: true,
+              },
+            },
+          },
+          limits: {
+            x: {
+              min: 'original',
+              max: 'original',
+            },
+            y: {
+              min: 'original',
+              max: 'original',
+            },
+          },
+        },
         scales: {
-          yAxes: [{ type: 'logarithmic' }],
+          x: {
+            type: 'linear',
+            bounds: 'data',
+          },
+          y: {
+            type: 'logarithmic',
+            bounds: 'data',
+            ticks: {
+              callback: function(tick, index, ticks) {
+                return tick.toExponential(1)
+              }
+            }
+          }
         },
         elements: {
           line: { tension: 0 },

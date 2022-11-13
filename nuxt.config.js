@@ -47,7 +47,10 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [{ src: '@/plugins/mavon-editor', mode: 'client' }],
+  plugins: [
+    { src: '@/plugins/mavon-editor', mode: 'client' },
+    { src: '@/plugins/chart', mode: 'client' },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
