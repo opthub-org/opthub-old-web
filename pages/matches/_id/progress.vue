@@ -114,6 +114,11 @@ export default {
             display: true,
             text: this.$t(this.isLeaderboardPublic ? "Scores of All Players" : 'Your Scores'),
           },
+          legend: {
+            labels: {
+              boxWidth: 12,
+            },
+          },
           tooltip: {
             callbacks: {
               label(context) {
