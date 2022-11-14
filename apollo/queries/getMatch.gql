@@ -18,6 +18,7 @@ query($id: Int!) {
       id
       public
       owner { name }
+      close_at
     }
     problem {
       id

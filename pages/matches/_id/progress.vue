@@ -192,7 +192,7 @@ export default {
       return this.match.public || this.isCompetitionClosed || this.isCompetitionOwned
     },
     isCompetitionClosed() {
-      return this.match.competition.close_at < this.$dayjs()
+      return this.$dayjs().isAfter(this.match.competition.close_at)
     },
     isCompetitionOwned() {
       return this.match.competition.owner.name === this.$auth.user?.['https://hasura.io/jwt/claims']?.['x-hasura-username']
