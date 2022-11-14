@@ -21,8 +21,8 @@
       <p>
         {{ $t('CHART MANIPULATION:') }}<br/><br/>
         {{ '&nbsp; * ' + $t('Drag: Zoom into draged area.') }}<br/>
-        {{ '&nbsp; * ' + $t('Pinch over X-scale: Zoom-in/out along X-axis.') }}<br/>
-        {{ '&nbsp; * ' + $t('Pinch over Y-scale: Zoom-in/out along Y-axis.') }}<br/>
+        {{ '&nbsp; * ' + $t('Pinch/Wheel over X-scale: Zoom-in/out along X-axis.') }}<br/>
+        {{ '&nbsp; * ' + $t('Pinch/Wheel over Y-scale: Zoom-in/out along Y-axis.') }}<br/>
         {{ '&nbsp; * ' + $t('Ctrl + Drag: Pan viewport area.') }}
       </p>
     </v-tooltip>
@@ -32,7 +32,6 @@
       :styles="chartstyles"
       ref="lineChart"
     />
-    <p>{{ $t(isLeaderboardPublic ? "All players' scores" : 'Your scores') }}</p>
     <v-card>
       <v-data-table
         :headers="[
@@ -101,6 +100,7 @@ export default {
         datasets: this.progress.map((p, i) => ({
           label: p.user.name,
           borderColor: pal[i % pal.length],
+          backgroundColor: pal[i % pal.length],
           data: p.scores,
           hide: this.hideAll,
         })),
@@ -110,6 +110,10 @@ export default {
       return {
         maintainAspectRatio: false,
         plugins: {
+          title: {
+            display: true,
+            text: this.$t(this.isLeaderboardPublic ? "Scores of All Players" : 'Your Scores'),
+          },
           tooltip: {
             callbacks: {
               label(context) {
@@ -161,10 +165,10 @@ export default {
           },
           y: {
             type: 'logarithmic',
-            bounds: 'data',
+            bounds: 'ticks',
             ticks: {
               callback: function(tick, index, ticks) {
-                return tick.toExponential(1)
+                return tick === 0 ? 0 : tick.toExponential(1)
               }
             }
           }
@@ -305,13 +309,13 @@ ja:
   Scoring error: 採点エラー
   Registered: 参加日時
   Last Update: 最終更新
-  All players' scores: 全プレイヤーのスコアの推移
+  Scores of All Players: 全プレイヤーのスコアの推移
   Your scores: あなたのスコアの推移
   loading: 読込中
   no data: データがありません
   "CHART MANIPULATION:": グラフの操作法：
   "Drag: Zoom into draged area.": ドラッグ：選択領域を拡大表示する。
-  "Pinch over X-scale: Zoom-in/out along X-axis.": X軸上でピンチ：X軸方向に拡大縮小する。
-  "Pinch over Y-scale: Zoom-in/out along Y-axis.": Y軸上でピンチ：Y軸方向に拡大縮小する。
+  "Pinch/Wheel over X-scale: Zoom-in/out along X-axis.": X軸上でピンチ/ホイール：X軸方向に拡大縮小する。
+  "Pinch/Wheel over Y-scale: Zoom-in/out along Y-axis.": Y軸上でピンチ/ホイール：Y軸方向に拡大縮小する。
   "Ctrl + Drag: Pan viewport area.": Ctrlを押しながらドラッグ：表示範囲を移動する。
 </i18n>
