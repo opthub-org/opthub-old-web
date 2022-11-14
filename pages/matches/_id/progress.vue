@@ -2,13 +2,36 @@
   <div v-if="!$apollo.loading">
     <h1>{{ $t('Match') + ': ' + match.competition.id + ' ' + match.name }}</h1>
     <p>{{ $t('Budget') + ': ' + match.budget }}</p>
+
+    <v-btn small @click="showAllGraphs()">
+      <v-icon>mdi-account-multiple-plus</v-icon>
+    </v-btn>
+    <v-btn small @click="hideAllGraphs()">
+      <v-icon>mdi-account-multiple-minus</v-icon>
+    </v-btn>
+    <v-btn small @click="$refs.lineChart.getCurrentChart().resetZoom()">
+      <v-icon>mdi-magnify-close</v-icon>
+    </v-btn>
+    <v-tooltip right>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn icon v-on="on">
+          <v-icon>mdi-help-circle</v-icon>
+        </v-btn>
+      </template>
+      <p>
+        {{ $t('CHART MANIPULATION:') }}<br/><br/>
+        {{ '&nbsp; * ' + $t('Drag: Zoom into draged area.') }}<br/>
+        {{ '&nbsp; * ' + $t('Pinch over X-scale: Zoom-in/out along X-axis.') }}<br/>
+        {{ '&nbsp; * ' + $t('Pinch over Y-scale: Zoom-in/out along Y-axis.') }}<br/>
+        {{ '&nbsp; * ' + $t('Ctrl + Drag: Pan viewport area.') }}
+      </p>
+    </v-tooltip>
     <line-chart
       :chart-data="chartdata"
       :chart-options="options"
       :styles="chartstyles"
       ref="lineChart"
     />
-    <v-btn @click="$refs.lineChart.getCurrentChart().resetZoom()">{{ $t('Reset zoom') }}</v-btn>
     <p>{{ $t(isLeaderboardPublic ? "All players' scores" : 'Your scores') }}</p>
     <v-card>
       <v-data-table
@@ -66,6 +89,7 @@ export default {
     return {
       match: {},
       progress: [],
+      hideAll: false,
     }
   },
   computed: {
@@ -78,6 +102,7 @@ export default {
           label: p.user.name,
           borderColor: pal[i % pal.length],
           data: p.scores,
+          hide: this.hideAll,
         })),
       }
     },
@@ -162,6 +187,22 @@ export default {
     },
     isCompetitionOwned() {
       return this.match.competition.owner.name === this.$auth.user?.['https://hasura.io/jwt/claims']?.['x-hasura-username']
+    },
+  },
+  methods: {
+    async hideAllGraphs() {
+      const chart = this.$refs.lineChart.getCurrentChart()
+      chart.data.datasets.forEach(item => {
+        item.hidden = true
+      })
+      chart.update()
+    },
+    showAllGraphs() {
+      const chart = this.$refs.lineChart.getCurrentChart()
+      chart.data.datasets.forEach(item => {
+        item.hidden = false
+      })
+      chart.update()
     },
   },
   head() {
@@ -268,4 +309,9 @@ ja:
   Your scores: あなたのスコアの推移
   loading: 読込中
   no data: データがありません
+  "CHART MANIPULATION:": グラフの操作法：
+  "Drag: Zoom into draged area.": ドラッグ：選択領域を拡大表示する。
+  "Pinch over X-scale: Zoom-in/out along X-axis.": X軸上でピンチ：X軸方向に拡大縮小する。
+  "Pinch over Y-scale: Zoom-in/out along Y-axis.": Y軸上でピンチ：Y軸方向に拡大縮小する。
+  "Ctrl + Drag: Pan viewport area.": Ctrlを押しながらドラッグ：表示範囲を移動する。
 </i18n>
