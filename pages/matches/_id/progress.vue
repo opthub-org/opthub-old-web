@@ -170,7 +170,7 @@ export default {
           },
           y: {
             type: 'logarithmic',
-            bounds: 'ticks',
+            bounds: 'data',
             ticks: {
               callback: function(tick, index, ticks) {
                 return tick === 0 ? 0 : tick.toExponential(1)
