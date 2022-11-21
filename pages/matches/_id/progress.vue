@@ -251,6 +251,9 @@ export default {
               name
             }
             match_id
+            match {
+              indicator_id
+            }
             budget
             scores
             submitted
@@ -274,6 +277,9 @@ export default {
       },
       update(data) {
         try {
+          const minimize = (a, b) => a.score - b.score
+          const maximize = (a, b) => b.score - a.score
+          const comparator = data.progress.length && data.progress[0].match.indicator_id === "hypervolume" ? maximize : minimize
           return data.progress
             .map((p) => {
               p.scores = p.scores.filter(s => s !== null)
@@ -281,7 +287,7 @@ export default {
               p.budget_left = p.budget - p.scored + p.scoring_error
               return p
             })
-            .sort((a, b) => a.score - b.score)
+            .sort(comparator)
             .map((p, i) => {
               p.rank = i + 1
               return p
