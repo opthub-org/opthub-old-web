@@ -60,7 +60,7 @@ function startExp(min, max) {
  * @returns {object[]} array of tick objects
  */
  function generateTicks(generationOptions, dataRange) {
-  let {min, max} = dataRange
+  let { min, max } = dataRange
   if (dataRange._zero === true) {
     min = Math.pow(10, Math.floor(log10(dataRange._minNotZero)) - 1)
   } else {
@@ -147,7 +147,7 @@ class LogarithmicScale extends Scale {
     let range
     this._zero = false
     if (minDefined && maxDefined) {
-      return {min, max}
+      return { min, max }
     }
     const metas = this.getMatchingVisibleMetas()
     for (let i = 0, ilen = metas.length; i < ilen; ++i) {
@@ -180,7 +180,7 @@ class LogarithmicScale extends Scale {
   }
 
   determineDataLimits() {
-    const {min, max} = this.getMinMax(true)
+    const { min, max } = this.getMinMax(true)
 
     this.min = isFinite(min) ? Math.max(0, min) : null
     this.max = isFinite(max) ? Math.max(0, max) : null
