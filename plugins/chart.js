@@ -265,9 +265,9 @@ class LogarithmicScale extends Scale {
   }
 
   /**
-	 * @param {number} value
-	 * @return {string}
-	 */
+   * @param {number} value
+   * @return {string}
+   */
   getLabelForValue(value) {
     return value === undefined
       ? '0'
@@ -275,8 +275,8 @@ class LogarithmicScale extends Scale {
   }
 
   /**
-	 * @protected
-	 */
+   * @protected
+   */
   configure() {
     const start = this.min;
 
