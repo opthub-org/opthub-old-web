@@ -215,7 +215,6 @@ class LogarithmicScale extends Scale {
       setMin(changeExponent(max, -1))
     }
     if (max <= 0) {
-
       setMax(changeExponent(min, +1))
     }
 
@@ -304,7 +303,6 @@ class LogarithmicScale extends Scale {
   }
 }
 // End of my LogarithmicScale
-
 
 ChartJS.register(
   Title,
