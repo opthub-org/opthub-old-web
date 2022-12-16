@@ -23,7 +23,7 @@ import {
   isFinite,
   isNullOrUndef,
   log10,
-  _setMinAndMaxByKey
+  _setMinAndMaxByKey,
 } from 'chart.js/helpers'
 
 const log10Floor = v => Math.floor(log10(v))
@@ -118,9 +118,9 @@ class LogarithmicScale extends Scale {
     ticks: {
       callback: Ticks.formatters.logarithmic,
       major: {
-        enabled: true
-      }
-    }
+        enabled: true,
+      },
+    },
   }
 
 
@@ -175,7 +175,7 @@ class LogarithmicScale extends Scale {
 
     return {
       min: finiteOrDefault(min, finiteOrDefault(max, min)),
-      max: finiteOrDefault(max, finiteOrDefault(min, max))
+      max: finiteOrDefault(max, finiteOrDefault(min, max)),
     }
   }
 
@@ -227,7 +227,7 @@ class LogarithmicScale extends Scale {
 
     const generationOptions = {
       min: this._userMin,
-      max: this._userMax
+      max: this._userMax,
     }
     const ticks = generateTicks(generationOptions, this)
 
