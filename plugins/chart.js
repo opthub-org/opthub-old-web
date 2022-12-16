@@ -1,5 +1,5 @@
-import Vue from "vue"
-import { Line } from "vue-chartjs/legacy"
+import Vue from 'vue'
+import { Line } from 'vue-chartjs/legacy'
 import zoomPlugin from 'chartjs-plugin-zoom'
 import {
   Chart as ChartJS,
@@ -10,11 +10,11 @@ import {
   // LogarithmicScale, // chart.js@3.9.1 does not support beginAtZero
   LineElement,
   PointElement,
-} from "chart.js"
+} from 'chart.js'
 
 // My LogarithmicScale that supports beginAtZero
 // See https://github.com/chartjs/Chart.js/pull/10711/files
-import { Scale, Ticks } from "chart.js"
+import { Scale, Ticks } from 'chart.js'
 
 import {
   callback as call,
@@ -317,6 +317,6 @@ ChartJS.register(
   zoomPlugin,
 )
 
-Vue.component("line-chart", {
+Vue.component('line-chart', {
   extends: Line,
 })
