@@ -26,7 +26,7 @@ import {
   _setMinAndMaxByKey,
 } from 'chart.js/helpers'
 
-const log10Floor = v => Math.floor(log10(v))
+const log10Floor = (v) => Math.floor(log10(v))
 const changeExponent = (v, m) => Math.pow(10, log10Floor(v) + m)
 
 function isMajor(tickVal) {
@@ -199,8 +199,8 @@ class LogarithmicScale extends Scale {
     let min = this.min
     let max = this.max
 
-    const setMin = v => (min = minDefined ? min : v)
-    const setMax = v => (max = maxDefined ? max : v)
+    const setMin = (v) => (min = minDefined ? min : v)
+    const setMax = (v) => (max = maxDefined ? max : v)
 
     if (min === max) {
       if (min <= 0) { // includes null
