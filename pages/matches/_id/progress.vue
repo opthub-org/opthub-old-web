@@ -277,8 +277,8 @@ export default {
       },
       update(data) {
         try {
-          const minimize = (a, b) => a.score - b.score
-          const maximize = (a, b) => b.score - a.score
+          const minimize = (a, b) => a.score == null ? +1 : b.score == null ? -1 : a.score - b.score
+          const maximize = (a, b) => a.score == null ? -1 : b.score == null ? +1 : b.score - a.score
           const comparator = data.progress.length && data.progress[0].match.indicator_id === "hypervolume" ? maximize : minimize
           return data.progress
             .map((p) => {
