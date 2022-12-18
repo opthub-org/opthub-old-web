@@ -278,8 +278,8 @@ export default {
       update(data) {
         try {
           const minimize = (a, b) => a.score == undefined ? +1 : b.score == undefined ? -1 : a.score - b.score
-          const maximize = (a, b) => a.score == undefined ? -1 : b.score == undefined ? +1 : b.score - a.score
-          const comparator = data.progress.length && data.progress[0].match.indicator_id === "hypervolume" ? maximize : minimize
+          const maximize = (a, b) => a.score == undefined ? +1 : b.score == undefined ? -1 : b.score - a.score
+          const comparator = data.progress[0]?.match?.indicator_id === "hypervolume" ? maximize : minimize
           return data.progress
             .map((p) => {
               p.scores = p.scores.filter(s => s !== null)
