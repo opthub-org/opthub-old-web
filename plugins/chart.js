@@ -30,7 +30,7 @@ const log10Floor = (v) => Math.floor(log10(v))
 const changeExponent = (v, m) => Math.pow(10, log10Floor(v) + m)
 
 function isMajor(tickVal) {
-  const remain = tickVal / (Math.pow(10, log10Floor(tickVal)))
+  const remain = tickVal / Math.pow(10, log10Floor(tickVal))
   return remain === 1
 }
 
@@ -59,7 +59,7 @@ function startExp(min, max) {
  * @param dataRange the range of the data
  * @returns {object[]} array of tick objects
  */
- function generateTicks(generationOptions, dataRange) {
+function generateTicks(generationOptions, dataRange) {
   let { min, max } = dataRange
   if (dataRange._zero === true) {
     min = Math.pow(10, Math.floor(log10(dataRange._minNotZero)) - 1)
@@ -75,9 +75,13 @@ function startExp(min, max) {
   const start = Math.round((min - base) * precision) / precision
   const offset = Math.floor((min - base) / stepSize / 10) * stepSize * 10
   let significand = Math.floor((start - offset) / Math.pow(10, exp))
-  let value = finiteOrDefault(generationOptions.min, Math.round((base + offset + significand * Math.pow(10, exp)) * precision) / precision)
+  let value = finiteOrDefault(
+    generationOptions.min,
+    Math.round((base + offset + significand * Math.pow(10, exp)) * precision) /
+      precision
+  )
   while (value < max) {
-    ticks.push({value, major: isMajor(value), significand})
+    ticks.push({ value, major: isMajor(value), significand })
     if (significand >= 10) {
       significand = significand < 15 ? 15 : 20
     } else {
@@ -88,15 +92,18 @@ function startExp(min, max) {
       significand = 2
       precision = exp >= 0 ? 1 : precision
     }
-    value = Math.round((base + offset + significand * Math.pow(10, exp)) * precision) / precision
+    value =
+      Math.round(
+        (base + offset + significand * Math.pow(10, exp)) * precision
+      ) / precision
   }
   const lastTick = finiteOrDefault(generationOptions.max, value)
-  ticks.push({value: lastTick, major: isMajor(lastTick), significand})
+  ticks.push({ value: lastTick, major: isMajor(lastTick), significand })
 
   return ticks
 }
 
-function parse(raw, index) { // eslint-disable-line no-unused-vars
+function parse(raw, _index) {
   if (isNullOrUndef(raw)) {
     return null
   }
@@ -108,9 +115,7 @@ function parse(raw, index) { // eslint-disable-line no-unused-vars
 }
 
 class LogarithmicScale extends Scale {
-
   static id = 'logarithmic'
-
   /**
    * @type {any}
    */
@@ -122,7 +127,6 @@ class LogarithmicScale extends Scale {
       },
     },
   }
-
 
   constructor(cfg) {
     super(cfg)
@@ -143,7 +147,7 @@ class LogarithmicScale extends Scale {
   }
 
   getMinMax(canStack) {
-    let {min, max, minDefined, maxDefined} = this.getUserBounds()
+    let { min, max, minDefined, maxDefined } = this.getUserBounds()
     let range
     this._zero = false
     if (minDefined && maxDefined) {
@@ -163,7 +167,10 @@ class LogarithmicScale extends Scale {
         this._minNotZero = max
         for (let j = 0, jlen = metas[i]._dataset.data.length; j < jlen; ++j) {
           if (metas[i]._dataset.data[j] > 0) {
-            this._minNotZero = Math.min(this._minNotZero, metas[i]._dataset.data[j])
+            this._minNotZero = Math.min(
+              this._minNotZero,
+              metas[i]._dataset.data[j]
+            )
           }
         }
       }
@@ -187,15 +194,22 @@ class LogarithmicScale extends Scale {
 
     // if data has `0` in it or `beginAtZero` is true, min (non zero) value is at bottom
     // of scale, and it does not equal suggestedMin, lower the min bound by one exp.
-    if (this._zero && this.min !== this._suggestedMin && !isFinite(this._userMin)) {
-      this.min = min === changeExponent(this.min, 0) ? changeExponent(this.min, -1) : changeExponent(this.min, 0)
+    if (
+      this._zero &&
+      this.min !== this._suggestedMin &&
+      !isFinite(this._userMin)
+    ) {
+      this.min =
+        min === changeExponent(this.min, 0)
+          ? changeExponent(this.min, -1)
+          : changeExponent(this.min, 0)
     }
 
     this.handleTickRangeOptions()
   }
 
   handleTickRangeOptions() {
-    const {minDefined, maxDefined} = this.getUserBounds()
+    const { minDefined, maxDefined } = this.getUserBounds()
     let min = this.min
     let max = this.max
 
@@ -203,7 +217,8 @@ class LogarithmicScale extends Scale {
     const setMax = (v) => (max = maxDefined ? max : v)
 
     if (min === max) {
-      if (min <= 0) { // includes null
+      if (min <= 0) {
+        // includes null
         setMin(1)
         setMax(10)
       } else {
@@ -270,7 +285,11 @@ class LogarithmicScale extends Scale {
   getLabelForValue(value) {
     return value === undefined
       ? '0'
-      : formatNumber(value, this.chart.options.locale, this.options.ticks.format)
+      : formatNumber(
+          value,
+          this.chart.options.locale,
+          this.options.ticks.format
+        )
   }
 
   /**
@@ -292,9 +311,11 @@ class LogarithmicScale extends Scale {
     if (value === null || isNaN(value)) {
       return NaN
     }
-    return this.getPixelForDecimal(value === this.min
-      ? 0
-      : (log10(value) - this._startValue) / this._valueRange)
+    return this.getPixelForDecimal(
+      value === this.min
+        ? 0
+        : (log10(value) - this._startValue) / this._valueRange
+    )
   }
 
   getValueForPixel(pixel) {
@@ -312,9 +333,9 @@ ChartJS.register(
   LogarithmicScale,
   LineElement,
   PointElement,
-  zoomPlugin,
+  zoomPlugin
 )
 
-Vue.component('line-chart', {
+Vue.component('LineChart', {
   extends: Line,
 })
