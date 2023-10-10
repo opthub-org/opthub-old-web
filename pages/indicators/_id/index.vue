@@ -8,14 +8,7 @@
       <v-tooltip :z-index="!isEditable ? 0 : -1" left>
         <template v-slot:activator="{ on, attrs }">
           <div v-on="on">
-            <v-btn
-              v-bind="attrs"
-              :disabled="!isEditable"
-              nuxt
-              append
-              to="edit"
-              >{{ $t('Edit') }}</v-btn
-            >
+            <v-btn v-bind="attrs" :disabled="!isEditable" nuxt append to="edit">{{ $t('Edit') }}</v-btn>
           </div>
         </template>
         <span>{{ $t('Owner only') }}</span>
@@ -23,28 +16,10 @@
     </v-toolbar>
 
     <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="indicator.description_en"
-        language="en"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="indicator.description_ja"
-        language="ja"
-        default-open="preview"
-        style="z-index: 1;"
-        :box-shadow="false"
-        :editable="false"
-        :subfield="false"
-        :toolbars-flag="false"
-      />
+      <mavon-editor v-if="$i18n.locale === 'en'" v-model="indicator.description_en" language="en" default-open="preview"
+        style="z-index: 1;" :box-shadow="false" :editable="false" :subfield="false" :toolbars-flag="false" />
+      <mavon-editor v-if="$i18n.locale === 'ja'" v-model="indicator.description_ja" language="ja" default-open="preview"
+        style="z-index: 1;" :box-shadow="false" :editable="false" :subfield="false" :toolbars-flag="false" />
     </client-only>
 
     <ul>
@@ -55,26 +30,16 @@
     </ul>
 
     <h2>{{ $t('Used in') }}</h2>
-    <v-data-table
-      :headers="[
-        { text: $t('Competition'), value: 'competition.id' },
-        { text: $t('Match'), value: 'name' },
-        { text: $t('Owner'), value: 'competition.owner.name' },
-        { text: $t('Created at'), value: 'created_at' },
-        { text: $t('Updated at'), value: 'updated_at' },
-      ]"
-      :items="indicator.matches"
-      :items-per-page="10"
-      :loading="$apollo.loading"
-      :footer-props="{
-        'items-per-page-options': [10, 20, 50, 100],
-        showFirstLastPage: true,
-      }"
-      multi-sort
-      :locale="$i18n.locale"
-      :loading-text="$t('loading')"
-      :no-data-text="$t('no data')"
-    >
+    <v-data-table :headers="[
+      { text: $t('Competition'), value: 'competition.id' },
+      { text: $t('Match'), value: 'name' },
+      { text: $t('Owner'), value: 'competition.owner.name' },
+      { text: $t('Created at'), value: 'created_at' },
+      { text: $t('Updated at'), value: 'updated_at' },
+    ]" :items="indicator.matches" :items-per-page="10" :loading="$apollo.loading" :footer-props="{
+  'items-per-page-options': [10, 20, 50, 100],
+  showFirstLastPage: true,
+}" multi-sort :locale="$i18n.locale" :loading-text="$t('loading')" :no-data-text="$t('no data')">
       <template v-slot:item.competition.id="{ item }">
         <nuxt-link :to="localePath('/competitions/' + item.competition.id)">{{ item.competition.id }}</nuxt-link>
       </template>
@@ -106,10 +71,9 @@ export default {
   },
   computed: {
     isEditable() {
-      return (
-        this.$auth.loggedIn &&
-        this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username'] ===
-          this.indicator.owner.name
+      return this.$auth.loggedIn && (
+        this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username'] === this.competition.owner.name ||
+        this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-default-role'] === 'admin'
       )
     },
   },
