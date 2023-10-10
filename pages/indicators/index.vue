@@ -6,33 +6,16 @@
       <v-tooltip :z-index="!$auth.loggedIn ? 0 : -1" left>
         <template v-slot:activator="{ on, attrs }">
           <div v-on="on">
-            <v-btn
-              v-bind="attrs"
-              :disabled="!$auth.loggedIn"
-              nuxt
-              append
-              to="new"
-              >{{ $t('New') }}</v-btn
-            >
+            <v-btn v-bind="attrs" :disabled="!$auth.loggedIn" nuxt append to="new">{{ $t('New') }}</v-btn>
           </div>
         </template>
         <span>{{ $t('Login needed') }}</span>
       </v-tooltip>
     </v-toolbar>
-    <v-data-table
-      :headers="headers"
-      :items="indicators"
-      :items-per-page="10"
-      :loading="$apollo.loading"
-      :footer-props="{
-        'items-per-page-options': [10, 20, 50, 100],
-        showFirstLastPage: true,
-      }"
-      multi-sort
-      :locale="$i18n.locale"
-      :loading-text="$t('loading')"
-      :no-data-text="$t('no data')"
-    >
+    <v-data-table :headers="headers" :items="indicators" :items-per-page="10" :loading="$apollo.loading" :footer-props="{
+      'items-per-page-options': [10, 20, 50, 100],
+      showFirstLastPage: true,
+    }" multi-sort :locale="$i18n.locale" :loading-text="$t('loading')" :no-data-text="$t('no data')">
       <template v-slot:item.id="{ item }">
         <nuxt-link append :to="item.id">{{ item.id }}</nuxt-link>
       </template>
@@ -75,9 +58,9 @@ export default {
     indicators: {
       query: listIndicators,
       variables: {
-        offset: 0,
-        limit: 100,
-        where: {},
+        offset: null,
+        limit: null,
+        where: null,
       },
 
       update(data) {

@@ -1,7 +1,7 @@
 query(
-  $offset: Int = 0
-  $limit: Int = 100
-  $where: indicators_bool_exp = {}
+  $offset: Int
+  $limit: Int
+  $where: indicators_bool_exp
 ) {
   indicators(offset: $offset, limit: $limit, where: $where) {
     id

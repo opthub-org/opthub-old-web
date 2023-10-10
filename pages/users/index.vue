@@ -3,20 +3,10 @@
     <v-toolbar color="white" flat>
       <v-toolbar-title class="headline">{{ $t('Users') }}</v-toolbar-title>
     </v-toolbar>
-    <v-data-table
-      :headers="headers"
-      :items="users"
-      :items-per-page="10"
-      :loading="$apollo.loading"
-      :footer-props="{
-        'items-per-page-options': [10, 20, 50, 100],
-        showFirstLastPage: true,
-      }"
-      multi-sort
-      :locale="$i18n.locale"
-      :loading-text="$t('loading')"
-      :no-data-text="$t('no data')"
-    >
+    <v-data-table :headers="headers" :items="users" :items-per-page="10" :loading="$apollo.loading" :footer-props="{
+      'items-per-page-options': [10, 20, 50, 100],
+      showFirstLastPage: true,
+    }" multi-sort :locale="$i18n.locale" :loading-text="$t('loading')" :no-data-text="$t('no data')">
       <template v-slot:item.name="{ item }">
         <nuxt-link :to="localePath('/users/' + item.name)">{{
           item.name
@@ -59,9 +49,9 @@ export default {
     users: {
       query: listUsers,
       variables: {
-        offset: 0,
-        limit: 100,
-        where: {},
+        offset: null,
+        limit: null,
+        where: null,
       },
       update(data) {
         return data.users.sort()
