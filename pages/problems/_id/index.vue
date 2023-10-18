@@ -72,7 +72,7 @@ export default {
   computed: {
     isEditable() {
       return this.$auth.loggedIn && (
-        this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username'] === this.competition.owner.name ||
+        this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-username'] === this.problem.owner.name ||
         this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-default-role'] === 'admin'
       )
     },
