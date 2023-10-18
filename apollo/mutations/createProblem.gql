@@ -1,18 +1,8 @@
 mutation(
-  $id: String!
-  $public: Boolean!
-  $image: String!
-  $description_en: String!
-  $description_ja: String!
+  $problems_insert_input: problems_insert_input!
 ) {
   insert_problems_one(
-    object: {
-      id: $id
-      public: $public
-      image: $image
-      description_en: $description_en
-      description_ja: $description_ja
-    }
+    object: $problems_insert_input
   ) {
     id
     public

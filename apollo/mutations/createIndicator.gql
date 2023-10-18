@@ -1,18 +1,8 @@
 mutation(
-  $id: String!
-  $public: Boolean!
-  $image: String!
-  $description_en: String!
-  $description_ja: String!
+  $indicators_insert_input: indicators_insert_input!
 ) {
   insert_indicators_one(
-    object: {
-      id: $id
-      public: $public
-      image: $image
-      description_en: $description_en
-      description_ja: $description_ja
-    }
+    object: $indicators_insert_input
   ) {
     id
     public
