@@ -6,50 +6,21 @@
       }}</v-toolbar-title>
     </v-toolbar>
 
-    <v-text-field
-      v-model="problem.id"
-      :label="$t('ID')"
-      :hint="$t('2--32 characters')"
-      :placeholder="$t('sphere')"
-    />
+    <v-text-field v-model="problem.id" :label="$t('ID')" :hint="$t('2--32 characters')" :placeholder="$t('sphere')" />
 
-    <v-text-field
-      v-model="problem.image"
-      :label="$t('Image')"
-      :hint="$t('Docker image tag')"
-      :placeholder="$t('opthub/sphere:latest')"
-    />
+    <v-text-field v-model="problem.image" :label="$t('Image')" :hint="$t('Docker image tag')"
+      :placeholder="$t('opthub/sphere:latest')" />
 
     <v-radio-group v-model="problem.public">
-      <v-radio
-        :label="$t('Public')"
-        :value="true"
-      />
-      <v-radio
-        :label="$t('Private')"
-        :value="false"
-      />
+      <v-radio :label="$t('Public')" :value="true" />
+      <v-radio :label="$t('Private')" :value="false" />
     </v-radio-group>
 
     <client-only>
-      <mavon-editor
-        v-if="$i18n.locale === 'en'"
-        v-model="problem.description_en"
-        language="en"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
-      <mavon-editor
-        v-if="$i18n.locale === 'ja'"
-        v-model="problem.description_ja"
-        language="ja"
-        :box-shadow="false"
-        :style="'z-index: ' + zIndex"
-        :toolbars="markdownOption"
-        @fullScreen="fullscreen"
-      />
+      <mavon-editor v-if="$i18n.locale === 'en'" v-model="problem.description_en" language="en" :box-shadow="false"
+        :style="'z-index: ' + zIndex" :toolbars="markdownOption" @fullScreen="fullscreen" />
+      <mavon-editor v-if="$i18n.locale === 'ja'" v-model="problem.description_ja" language="ja" :box-shadow="false"
+        :style="'z-index: ' + zIndex" :toolbars="markdownOption" @fullScreen="fullscreen" />
     </client-only>
     <v-btn :loading="submitting" @click="submit">{{ $t('Submit') }}</v-btn>
   </div>
@@ -188,9 +159,13 @@ $\\text{minimize } f(x_1, x_2) = x_1^2 + x_2^2 \\quad \\text{subject to } -1 \\l
     },
     async submit() {
       this.submitting = true
+      const variables = { ...this.problem }
+      if (this.$auth.loggedIn && this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-default-role'] === 'admin') {
+        variables.owner_id = this.$auth.user['https://hasura.io/jwt/claims']['x-hasura-user-id']
+      }
       await this.$apollo.mutate({
         mutation: createProblem,
-        variables: { ...this.problem },
+        variables: { problems_insert_input: variables },
         refetchQueries: [
           { query: listProblems },
           {
