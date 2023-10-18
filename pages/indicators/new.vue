@@ -168,7 +168,7 @@ $\\text{minimize } f(x_1, x_2) = x_1^2 + x_2^2 \\quad \\text{subject to } -1 \\l
       }
       await this.$apollo.mutate({
         mutation: createIndicator,
-        variables: variables,
+        variables: { indicators_insert_input: variables },
         refetchQueries: [
           { query: listIndicators },
           {
