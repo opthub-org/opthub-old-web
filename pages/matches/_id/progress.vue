@@ -19,48 +19,33 @@
         </v-btn>
       </template>
       <p>
-        {{ $t('CHART MANIPULATION:') }}<br/><br/>
-        {{ '&nbsp; * ' + $t('Drag: Zoom into draged area.') }}<br/>
-        {{ '&nbsp; * ' + $t('Pinch/Wheel over X-scale: Zoom-in/out along X-axis.') }}<br/>
-        {{ '&nbsp; * ' + $t('Pinch/Wheel over Y-scale: Zoom-in/out along Y-axis.') }}<br/>
+        {{ $t('CHART MANIPULATION:') }}<br /><br />
+        {{ '&nbsp; * ' + $t('Drag: Zoom into draged area.') }}<br />
+        {{ '&nbsp; * ' + $t('Pinch/Wheel over X-scale: Zoom-in/out along X-axis.') }}<br />
+        {{ '&nbsp; * ' + $t('Pinch/Wheel over Y-scale: Zoom-in/out along Y-axis.') }}<br />
         {{ '&nbsp; * ' + $t('Ctrl + Drag: Pan viewport area.') }}
       </p>
     </v-tooltip>
-    <line-chart
-      :chart-data="chartdata"
-      :chart-options="options"
-      :styles="chartstyles"
-      ref="lineChart"
-    />
+    <line-chart :chart-data="chartdata" :chart-options="options" :styles="chartstyles" ref="lineChart" />
     <v-card>
-      <v-data-table
-        :headers="[
-          { text: $t('Rank'), value: 'rank', align: 'end' },
-          { text: $t('User'), value: 'user.name' },
-          { text: $t('Score'), value: 'score', align: 'end' },
-          { text: $t('Submitted'), value: 'submitted', align: 'end' },
-          { text: $t('Evaluating'), value: 'evaluating', align: 'end' },
-          { text: $t('Evaluated'), value: 'evaluated', align: 'end' },
-          { text: $t('Evaluation error'), value: 'evaluation_error', align: 'end' },
-          { text: $t('Scoring'), value: 'scoring', align: 'end' },
-          { text: $t('Scored'), value: 'scored', align: 'end' },
-          { text: $t('Scoring error'), value: 'scoring_error', align: 'end' },
-          { text: $t('Budget left'), value: 'budget_left', align: 'end' },
-          { text: $t('Registered'), value: 'created_at', align: 'end' },
-          { text: $t('Last Update'), value: 'updated_at', align: 'end' },
-        ]"
-        :items="progress"
-        :items-per-page="10"
-        :loading="$apollo.loading"
-        :footer-props="{
-          'items-per-page-options': [10, 20, 50, 100],
-          showFirstLastPage: true,
-        }"
-        multi-sort
-        :locale="$i18n.locale"
-        :loading-text="$t('loading')"
-        :no-data-text="$t('no data')"
-      >
+      <v-data-table :headers="[
+        { text: $t('Rank'), value: 'rank', align: 'end' },
+        { text: $t('User'), value: 'user.name' },
+        { text: $t('Score'), value: 'score', align: 'end' },
+        { text: $t('Submitted'), value: 'submitted', align: 'end' },
+        { text: $t('Evaluating'), value: 'evaluating', align: 'end' },
+        { text: $t('Evaluated'), value: 'evaluated', align: 'end' },
+        { text: $t('Evaluation error'), value: 'evaluation_error', align: 'end' },
+        { text: $t('Scoring'), value: 'scoring', align: 'end' },
+        { text: $t('Scored'), value: 'scored', align: 'end' },
+        { text: $t('Scoring error'), value: 'scoring_error', align: 'end' },
+        { text: $t('Budget left'), value: 'budget_left', align: 'end' },
+        { text: $t('Registered'), value: 'created_at', align: 'end' },
+        { text: $t('Last Update'), value: 'updated_at', align: 'end' },
+      ]" :items="progress" :items-per-page="10" :loading="$apollo.loading" :footer-props="{
+  'items-per-page-options': [10, 20, 50, 100],
+  showFirstLastPage: true,
+}" multi-sort :locale="$i18n.locale" :loading-text="$t('loading')" :no-data-text="$t('no data')">
         <template v-slot:item.user.name="{ item }">
           <nuxt-link :to="localePath('/users/' + item.user.name)">{{
             item.user.name
@@ -124,10 +109,10 @@ export default {
               label(context) {
                 let label = context.dataset.label || '';
                 if (label) {
-                    label += ': ';
+                  label += ': ';
                 }
                 if (context.parsed.y !== null) {
-                    label += context.parsed.y.toExponential(4)
+                  label += context.parsed.y.toExponential(4)
                 }
                 return label
               },
@@ -172,7 +157,7 @@ export default {
             type: 'logarithmic',
             bounds: 'data',
             ticks: {
-              callback: function(tick, index, ticks) {
+              callback: function (tick, index, ticks) {
                 return tick === 0 ? 0 : tick.toExponential(1)
               }
             }
@@ -279,7 +264,7 @@ export default {
         try {
           const minimize = (a, b) => a.score == null ? +1 : b.score == null ? -1 : a.score - b.score
           const maximize = (a, b) => a.score == null ? +1 : b.score == null ? -1 : b.score - a.score
-          const comparator = data.progress[0]?.match?.indicator_id === "hypervolume" ? maximize : minimize
+          const comparator = data.progress[0]?.match?.indicator_id?.includes?.("hypervolume") ? maximize : minimize
           return data.progress
             .map((p) => {
               p.scores = p.scores.filter(s => s !== null)
