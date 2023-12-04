@@ -77,21 +77,28 @@ export default {
     }
   },
   computed: {
+    scoreOffset() {
+      const scores = this.progress.flatMap((p) => p.scores)
+      return 1 - Math.min(...scores)
+    },
     chartdata() {
       const lab = new Array(this.match.budget).fill(1).map((n, i) => n + i)
       const pal = palette('mpn65', 65).map((hex) => '#' + hex)
+      const scoreOffset = this.scoreOffset
+      console.log(`scoreOffset=${scoreOffset}`)
       return {
         labels: lab,
         datasets: this.progress.map((p, i) => ({
           label: p.user.name,
           borderColor: pal[i % pal.length],
           backgroundColor: pal[i % pal.length],
-          data: p.scores,
+          data: p.scores.map((s) => (s == null ? null : s + scoreOffset)),
           hide: this.hideAll,
         })),
       }
     },
     options() {
+      const scoreOffset = this.scoreOffset
       return {
         maintainAspectRatio: false,
         plugins: {
@@ -158,7 +165,7 @@ export default {
             bounds: 'data',
             ticks: {
               callback: function (tick, index, ticks) {
-                return tick === 0 ? 0 : tick.toExponential(1)
+                return (tick - scoreOffset).toExponential(1)
               }
             }
           }
