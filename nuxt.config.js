@@ -76,6 +76,7 @@ export default {
     '@nuxtjs/i18n',
     '@nuxtjs/markdownit',
     '@nuxtjs/pwa',
+    '@nuxtjs/redirect-module',
   ],
   helmet: {},
   apollo: {
@@ -161,6 +162,9 @@ export default {
     injected: true,
     linkify: true,
   },
+  redirect: [
+    { from: '^(.*)$', to: 'https://opthub.ai/$1', statusCode: 301 }
+  ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
